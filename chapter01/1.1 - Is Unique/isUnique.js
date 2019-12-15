@@ -65,7 +65,7 @@ const isUnique = str => {
 	}
 };
 
-const isUniqueBitWise = str => str;
+const isUniqueBitVector = str => str;
 
 
-module.exports = { isUniqueASCII, isUnique ,isUniqueBitWise };
+module.exports = { isUniqueASCII, isUnique ,isUniqueBitVector };
