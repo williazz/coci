@@ -25,45 +25,47 @@ E:
 */
 
 const isUniqueASCII = (str, extended = false) => {
-    try {
-        if (typeof str !== 'string') {
-            throw new TypeError('Argument str must be a string');
-        } else {
-            const length = extended ? 256 : 128;
-            if (str.length > length) return false;
-            const chars = Array(length);
-            for (let i = 0; i < str.length; i++) {
-                const charCode = str.charCodeAt(i);
-                if (chars[charCode]) return false
-                else {
-                    chars[charCode] = true;
-                }
-            }
-            return true;
-        }
-    } catch (err) {
-        console.error(err);
-        return err;
-    }
+	try {
+		if (typeof str !== 'string') {
+			throw new TypeError('Argument str must be a string');
+		} else {
+			const length = extended ? 256 : 128;
+			if (str.length > length) return false;
+			const chars = Array(length);
+			for (let i = 0; i < str.length; i++) {
+				const charCode = str.charCodeAt(i);
+				if (chars[charCode]) return false;
+				else {
+					chars[charCode] = true;
+				}
+			}
+			return true;
+		}
+	} catch (err) {
+		console.error(err);
+		return err;
+	}
 };
 
 const isUnique = str => {
-    try {
-        if (typeof str !== 'string') {
-            throw new TypeError('Argument str must be a string');
-        } else {
-            const chars = new Set();
-            for (let i = 0; i < str.length; i++) {
-                if (chars.has(str[i])) return false
-                else chars.add(str[i])
-            }
-            return true;
-        }
-    } catch (err) {
-        console.error(err);
-        return err;
-    }
-}
+	try {
+		if (typeof str !== 'string') {
+			throw new TypeError('Argument str must be a string');
+		} else {
+			const chars = new Set();
+			for (let i = 0; i < str.length; i++) {
+				if (chars.has(str[i])) return false;
+				else chars.add(str[i]);
+			}
+			return true;
+		}
+	} catch (err) {
+		console.error(err);
+		return err;
+	}
+};
+
+const isUniqueBitWise = str => str;
 
 
-module.exports = { isUniqueASCII, isUnique };
+module.exports = { isUniqueASCII, isUnique ,isUniqueBitWise };
