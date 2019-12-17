@@ -2,12 +2,11 @@
   "name": "coci-js",
   "version": "1.0.0",
   "description": "Solutions to Cracking the Code Interview in JS",
-  "main": "index.js",
   "scripts": {
     "test": "jest"
   },
   "keywords": [],
-  "author": "",
+  "author": "williazz",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
