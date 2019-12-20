@@ -19,28 +19,28 @@
 */
 
 const palindromePermutation = str => {
-  if (str.length <= 1) return true;
-  const chars = new Array(128);
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    if (chars[char]) chars[char]++;
-    else chars[char] = 1;
-  }
-  if (str.length % 2) {
-    let seenOdd = false;
-    for (let i = 0; i < chars.length; i++) {
-      if (chars[i] && chars[i] % 2) {
-        if (seenOdd) return false;
-        seenOdd = true;
-      }
-    }
-  } else {
-    for (let i = 0; i < chars.length; i++) {
-      if (chars[i] && chars[i] % 2) return false;
-    }
-  }
+	if (str.length <= 1) return true;
+	const chars = new Array(128);
+	for (let i = 0; i < str.length; i++) {
+		const char = str.charCodeAt(i);
+		if (chars[char]) chars[char]++;
+		else chars[char] = 1;
+	}
+	if (str.length % 2) {
+		let seenOdd = false;
+		for (let i = 0; i < chars.length; i++) {
+			if (chars[i] && chars[i] % 2) {
+				if (seenOdd) return false;
+				seenOdd = true;
+			}
+		}
+	} else {
+		for (let i = 0; i < chars.length; i++) {
+			if (chars[i] && chars[i] % 2) return false;
+		}
+	}
 
-  return true;
+	return true;
 };
 
 module.exports = palindromePermutation;
