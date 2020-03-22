@@ -1,3 +1,6 @@
+// O(ns) => O(n) time
+// O(n) space
+
 const tripleStep = n => {
   const matr = new Array(n + 1).fill().map(x => []);
   for (let i = 0; i <= n; i++) {
@@ -17,10 +20,11 @@ const tripleStep = n => {
 };
 
 // O(ns) => O(n) time
-// O(n) space
+// O(c) space
 
-const tripleStepNSpace = n => {
-  const matr = new Array(2).fill().map(x => []);
+const tripleStepCSpace = n => {
+  // const matr = new Array(2).fill().map(x => []);
+  const matr = [[], []];
   for (let i = 0; i <= n; i++) {
     for (let k = 0; k <= 3; k++) {
       if (k === 0 || i === 0) matr[1][k] = 0;
@@ -34,21 +38,20 @@ const tripleStepNSpace = n => {
   return matr[0][3];
 };
 
-// O(3^n) time
+// O(2^n) time
 
 const tripleStepRec = (n, s = 3) => {
   if (s == 0 || n === 0) return 0;
   else if (n === 1 || s === 1) return 1;
   else if (s > n) return tripleStepRec(n, s - 1);
-  else if (s <= n)
-    return 1 + Math.max(tripleStepRec(n, s - 1), tripleStepRec(n - 1, s));
+  else return 1 + Math.max(tripleStepRec(n, s - 1), tripleStepRec(n - 1, s));
 };
 
 let passes = true;
 for (let i = 0; i < 500; i++) {
   let isEqual =
-    tripleStepNSpace(i) === tripleStep(i) &&
-    tripleStepNSpace(i) === tripleStepRec(i);
+    tripleStepCSpace(i) === tripleStep(i) &&
+    tripleStepCSpace(i) === tripleStepRec(i);
 
   if (!isEqual) {
     passes = false;
@@ -56,6 +59,3 @@ for (let i = 0; i < 500; i++) {
   }
 }
 console.log(passes);
-
-// const output = tripleStepNSpace(50) === tripleStep(50);
-// console.log(output);
