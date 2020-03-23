@@ -51,7 +51,7 @@ const multiplyDP = (m, n) => {
 // O (n) space
 
 const multiplyDPopt = (m, n) => {
-  const isNegative = m < 0 || n < 0;
+  const isNegative = (m < 0 && n > 0) || (n < 0 && m > 0);
   const am = Math.abs(m),
     an = Math.abs(n);
   const arr = [0, am];
@@ -62,14 +62,21 @@ const multiplyDPopt = (m, n) => {
   return isNegative ? 0 - arr[an] : arr[an];
 };
 
-console.log(multiplyDPopt(15, -15));
+const tests = [];
 
-// const tests = [
-//   [[1, 2], 2],
-//   [[3, 15], 45],
-//   [[-5, 125], -625],
-// ];
+for (let i = 0; i < 500; i++) {
+  const randInt = (floor, ceil) =>
+    Math.floor(Math.random() * (ceil - floor) - floor);
+  tests.push([randInt(-1000, 1000), randInt(-1000, 1000)]);
+}
 
-// tests.forEach(([args, ans]) => {
-//   console.log(`args: ${args}; ans: ${ans}, pass: ${multiplyDP(...args)}`);
-// });
+let allPass = true;
+
+tests.forEach(args => {
+  const ans = args[0] * args[1];
+  const att = multiplyDPopt(...args);
+  const pass = ans === att;
+  if (!pass) allPass = false;
+});
+
+console.log(allPass);
