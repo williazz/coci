@@ -126,6 +126,14 @@ describe('LinkedList', () => {
     });
   });
 
+  describe('fromArray', () => {
+    it('should build a list with numbers 0-4', (done) => {
+      const my = new LinkedList().fromArray(_.range(5));
+      expect(my.toString()).toEqual(_.range(5).join(''));
+      done();
+    });
+  });
+
   describe('reverse', () => {
     it('should have same length', (done) => {
       const out = LLRange(30)

@@ -1,5 +1,4 @@
 module.exports = {
-  Singly: require('./LinkedList.js'),
-  Doubly: null,
+  LinkedList: require('./LinkedList.js'),
   Range: require('./LLRange.js'),
 };
