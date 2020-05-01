@@ -1,4 +1,4 @@
-const LLRange = require('./LLRange.js');
+const LLRange = require('../LLRange.js');
 
 describe('LLRange', () => {
   describe('only start', () => {
