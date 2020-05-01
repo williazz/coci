@@ -5,6 +5,7 @@ class LinkedList {
     this.head = null;
     this.tail = null;
   }
+
   append(val) {
     const node = Node(val);
     if (!this.head) {
@@ -25,7 +26,20 @@ class LinkedList {
     }
   }
 
-  delete() {}
+  delete(val) {
+    if (this.head.val === val) {
+      this.head = this.head.next;
+    } else {
+      let cn = this.head;
+      while (cn) {
+        if (cn.next && cn.next.val === val) {
+          cn.next = cn.next.next;
+          return;
+        }
+        cn = cn.next;
+      }
+    }
+  }
 
   find() {}
   deleteHead() {}
