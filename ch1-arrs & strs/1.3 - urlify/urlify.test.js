@@ -1,9 +1,9 @@
-const { urlify, urlifyCOCI } = require('./urlify.js');
+const { urlifyBF, urlifyOpt } = require('./urlify.js');
 
 describe('urlify', () => {
-	it('it returns a string', done => {
-		const res = urlify('asd f');
-		expect(typeof res).toBe('string');
-		done();
-	});
+  it('returns the same as the brute force approach', (done) => {
+    const input = 'asd f';
+    expect(urlifyBF(input)).toEqual(urlifyOpt(input));
+    done();
+  });
 });

@@ -54,12 +54,21 @@ const multiplyDPopt = (m, n) => {
   const isNegative = (m < 0 && n > 0) || (n < 0 && m > 0);
   const am = Math.abs(m),
     an = Math.abs(n);
-  const arr = [0, am];
-  for (let k = 2; k <= an; k++) {
+  let lg, sm;
+  if (am > an) {
+    lg = am;
+    sm = an;
+  } else {
+    lg = an;
+    sm = am;
+  }
+
+  const arr = [0, lg];
+  for (let k = 2; k <= sm; k++) {
     if (k % 2) arr[k] = arr[k >> 1] + arr[(k >> 1) + 1];
     else arr[k] = arr[k] = arr[k >> 1] + arr[k >> 1];
   }
-  return isNegative ? 0 - arr[an] : arr[an];
+  return isNegative ? 0 - arr[sm] : arr[sm];
 };
 
 const tests = [];
@@ -79,4 +88,4 @@ tests.forEach(args => {
   if (!pass) allPass = false;
 });
 
-console.log(allPass);
+console.log(`${allPass ? 'passed' : 'failed'} 500 tests`);
