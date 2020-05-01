@@ -1,10 +1,23 @@
 const Node = (val, next = null) => ({ val, next });
 
+/**
+ * LinkedList
+ * @constructor
+ */
 class LinkedList {
   constructor() {
+    /**@property LLNode */
     this.head = null;
+
+    /**@property LLNode */
     this.tail = null;
   }
+
+  /**
+   * Appends a node to end of LL
+   * @param {*} val
+   * @return {LinkedList}
+   */
 
   append(val) {
     const node = Node(val);
@@ -17,6 +30,12 @@ class LinkedList {
     return this;
   }
 
+  /**
+   * Prepends a node to beginning of LL
+   * @param {*} val
+   * @returns {LinkedList}
+   */
+
   prepend(val) {
     const node = Node(val);
     if (!this.tail) {
@@ -27,6 +46,12 @@ class LinkedList {
     }
     return this;
   }
+
+  /**
+   * Deletes a node with specific val from LL
+   * @param {*} val
+   * @returns {LinkedList}
+   */
 
   delete(val) {
     if (this.head.val === val) {
@@ -44,6 +69,12 @@ class LinkedList {
     return this;
   }
 
+  /**
+   * Finds a node with specific val from LL
+   * @param {*} val
+   * @returns {LLNode}
+   */
+
   find(val) {
     let cn = this.head;
     while (cn) {
@@ -52,6 +83,10 @@ class LinkedList {
     }
   }
 
+  /**
+   * Removes the head from a LL
+   * @returns {LinkedList}
+   */
   deleteHead() {
     if (this.head === this.tail) {
       this.head = this.tail = null;
@@ -60,6 +95,11 @@ class LinkedList {
     }
     return this;
   }
+
+  /**
+   * Removes the tail from a LL
+   * @returns {LinkedList}
+   */
 
   deleteTail() {
     if (this.head === this.tail) {
@@ -76,11 +116,22 @@ class LinkedList {
     return this;
   }
 
+  /**
+   * Builds LL from array of values
+   * @param {Array} values
+   * @returns {LinkedList}
+   */
+
   fromArray(values = []) {
     this.tail = this.head = null;
     for (let i = 0; i < values.length; i++) this.append(values[i]);
     return this;
   }
+
+  /**
+   * Builds an array from LL
+   * @returns {Array}
+   */
 
   toArray() {
     const arr = [];
@@ -92,13 +143,24 @@ class LinkedList {
     return arr;
   }
 
-  toString(delimiter = ',') {
+  /**
+   * Builds a string from LL with a delimiter
+   * @param {*} delimiter
+   * @returns {Array}
+   */
+
+  toString(delimiter = '') {
     return this.toArray().join(delimiter);
   }
 
   length() {
     return this.toArray().length;
   }
+
+  /**
+   * Reverses a LL
+   * @returns {LinkedList}
+   */
 
   reverse() {
     let head = this.head;
