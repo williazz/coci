@@ -1,5 +1,4 @@
 const LinkedList = require('../LinkedList.js');
-const LLRange = require('../LLRange.js');
 const _ = require('underscore');
 
 describe('LinkedList', () => {
@@ -40,7 +39,7 @@ describe('LinkedList', () => {
   });
 
   describe('delete', () => {
-    let LL = LLRange(30);
+    let LL = new LinkedList().range(30);
     LL.delete(13);
     LL = LL.toArray();
 
@@ -56,7 +55,7 @@ describe('LinkedList', () => {
   });
 
   describe('find', () => {
-    let LL = LLRange(30);
+    let LL = new LinkedList().range(30);
     it('finds an element in the LL', (done) => {
       for (let i = 0; i < 30; i += 3) {
         expect(LL.find(i)).toBeTruthy();
@@ -72,7 +71,7 @@ describe('LinkedList', () => {
   describe('deleteHead', () => {
     let LL = new LinkedList();
     beforeEach((done) => {
-      LL = LLRange(30);
+      LL = new LinkedList().range(30);
       done();
     });
     it('deletes one head', (done) => {
@@ -94,21 +93,21 @@ describe('LinkedList', () => {
 
   describe('deleteTail', () => {
     it('deletes tail for length 1', (done) => {
-      const LL = LLRange(1);
+      const LL = new LinkedList().range(1);
       LL.deleteTail();
       expect(LL.toString()).toBeEmpty();
       done();
     });
 
     it('deletes tail for length 2', (done) => {
-      const LL = LLRange(2);
+      const LL = new LinkedList().range(2);
       LL.deleteTail();
       expect(LL.toString()).toBe('0');
       done();
     });
 
     it('deletes one tail for length >= 3', (done) => {
-      const LL = LLRange(30);
+      const LL = new LinkedList().range(30);
       LL.deleteTail();
       const arr = LL.toArray();
       expect(arr[arr.length - 1]).toEqual(28);
@@ -117,7 +116,7 @@ describe('LinkedList', () => {
     });
 
     it('deletes multiple tails length >= 3', (done) => {
-      const LL = LLRange(30);
+      const LL = new LinkedList().range(30);
       for (let i = 0; i < 5; i++) LL.deleteTail();
       const arr = LL.toArray();
       expect(arr[arr.length - 1]).toEqual(24);
@@ -126,9 +125,18 @@ describe('LinkedList', () => {
     });
   });
 
+  describe('fromArray', () => {
+    it('should build a list with numbers 0-4', (done) => {
+      const my = new LinkedList().fromArray(_.range(5));
+      expect(my.toString()).toEqual(_.range(5).join(''));
+      done();
+    });
+  });
+
   describe('reverse', () => {
     it('should have same length', (done) => {
-      const out = LLRange(30)
+      const out = new LinkedList()
+        .range(30)
         .reverse()
         .toArray();
       expect(out.length).toEqual(30);
@@ -136,7 +144,8 @@ describe('LinkedList', () => {
     });
 
     it('should have reversed list', (done) => {
-      const out = LLRange(30)
+      const out = new LinkedList()
+        .range(30)
         .reverse()
         .toString('');
       const ans = _.range(30)
@@ -144,6 +153,45 @@ describe('LinkedList', () => {
         .join('');
       expect(out).toEqual(ans);
       done();
+    });
+  });
+
+  describe('range', () => {
+    describe('only start', () => {
+      it('should create range 0-9', (done) => {
+        const LL = new LinkedList().range(10);
+        let cn = LL.head;
+        for (let i = 0; i < 10; i++) {
+          expect(cn.val).toEqual(i);
+          cn = cn.next;
+        }
+        expect(cn).toEqual(null);
+        done();
+      });
+    });
+    describe('only start and end', () => {
+      it('should create range 10-19', (done) => {
+        const LL = new LinkedList().range(10, 20);
+        let cn = LL.head;
+        for (let i = 10; i < 20; i++) {
+          expect(cn.val).toEqual(i);
+          cn = cn.next;
+        }
+        expect(cn).toEqual(null);
+        done();
+      });
+    });
+    describe('start, end, and incr', () => {
+      it('should create range 10-19', (done) => {
+        const LL = new LinkedList().range(-40, 20, 3);
+        let cn = LL.head;
+        for (let i = -40; i < 20; i += 3) {
+          expect(cn.val).toEqual(i);
+          cn = cn.next;
+        }
+        expect(cn).toEqual(null);
+        done();
+      });
     });
   });
 });
