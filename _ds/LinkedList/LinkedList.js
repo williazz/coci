@@ -1,3 +1,4 @@
+const _ = require('underscore');
 const Node = (val, next = null) => ({ val, next });
 
 /**
@@ -185,6 +186,18 @@ class LinkedList {
     }
     this.head = prev;
     this.tail = tail;
+    return this;
+  }
+
+  /**
+   * Creates a LinkedList range, mapping directly to underscore.js's _.range method
+   * @param {Number} start
+   * @param {Number} [end]
+   * @param {Number} [incr]
+   */
+  range(start, end, incr) {
+    const range = _.range(start, end, incr);
+    this.fromArray(range);
     return this;
   }
 }
