@@ -6,11 +6,14 @@ const Node = (val, next = null) => ({ val, next });
  */
 class LinkedList {
   constructor() {
-    /**@property LLNode */
+    /**@property {LLNode} */
     this.head = null;
 
-    /**@property LLNode */
+    /**@property {LLNode} */
     this.tail = null;
+
+    /**@property {Number} */
+    this.length = 0;
   }
 
   /**
@@ -88,12 +91,13 @@ class LinkedList {
    * @returns {LinkedList}
    */
   deleteHead() {
+    const popped = this.head;
     if (this.head === this.tail) {
       this.head = this.tail = null;
     } else if (this.head) {
       this.head = this.head.next;
     }
-    return this;
+    return popped;
   }
 
   /**
@@ -102,6 +106,7 @@ class LinkedList {
    */
 
   deleteTail() {
+    const popped = this.tail;
     if (this.head === this.tail) {
       this.head = this.tail = null;
     } else if (this.head.next === this.tail) {
@@ -113,7 +118,7 @@ class LinkedList {
       cn.next = null;
       this.tail = cn;
     }
-    return this;
+    return popped;
   }
 
   /**
@@ -153,6 +158,10 @@ class LinkedList {
     return this.toArray().join(delimiter);
   }
 
+  /**
+   * Computes length of LL
+   * @returns {Number}
+   */
   length() {
     return this.toArray().length;
   }
