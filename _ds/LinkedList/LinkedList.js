@@ -13,8 +13,8 @@ class LinkedList {
     /**@property {LLNode} */
     this.tail = null;
 
-    /**@property {Number} */
-    this.length = 0;
+    // /**@property {Number} */
+    // this.length = 0;
   }
 
   /**
@@ -164,7 +164,13 @@ class LinkedList {
    * @returns {Number}
    */
   length() {
-    return this.toArray().length;
+    let cn = this.head;
+    let count = 0;
+    while (cn) {
+      cn = cn.next;
+      count++;
+    }
+    return count;
   }
 
   /**
