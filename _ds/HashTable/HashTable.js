@@ -1,14 +1,16 @@
-const LinkedList = require('../LinkedList');
+const Queue = require('../Queue');
 
 /**
  * HashTable
  * @constructor
  */
 class HashTable {
-  constructor(size = 32) {
+  constructor(size) {
     this.data = new Array(size);
     this.items = 0;
-    this.size = size;
+    this.minSize = 11;
+    this.size = size || this.minSize;
+    this.loadFactor = 3 / 4;
   }
 
   /**
@@ -17,8 +19,8 @@ class HashTable {
    */
   hash(key) {
     const str = String(key);
-    const prime = 101;
     const size = this.size;
+    const prime = 101;
     let factor = 1;
     let sum = 0;
     for (let i = 0; i < str.length; i++) {
@@ -34,16 +36,17 @@ class HashTable {
    * @param {*} val
    * @returns {*}
    */
-  set(key, val) {
+  set(key, val, options = { resizing: false }) {
     const { data } = this;
     const index = this.hash(key);
-    if (!data[index]) data[index] = new LinkedList();
+    if (!data[index]) data[index] = new Queue();
     let node = data[index].find((cv, deepEqual) => deepEqual(cv.key, key));
     if (node) node.val.val = val;
     else {
       node = data[index].append({ key, val });
-      this.items++;
+      if (!options.resizing) this.items++;
     }
+    this.resizeIfNeeded();
     return node.val;
   }
 
@@ -60,14 +63,26 @@ class HashTable {
   }
 
   /**
+   * Iterates over every single key value pair
+   * @param {*} callback - receives the key-value pair as the
+   */
+  iterate(callback = () => {}) {
+    const { data } = this;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i]) data[i].iterate(callback);
+    }
+  }
+
+  /**
    * Gets all of the key value pairs and writes to an array
+   * @param {Function} callback - A callback to selectively choose what values to receive
    * @returns {Array}
    */
-  toArray() {
+  toArray(callback = (cv) => cv) {
     const res = [];
     const { data } = this;
     for (let i = 0; i < data.length; i++) {
-      if (data[i]) res.push(...data[i].toArray());
+      if (data[i]) res.push(...data[i].toArray(callback));
     }
     return res;
   }
@@ -77,22 +92,62 @@ class HashTable {
    * @param {*} key
    * @returns {*} - The deleted value
    */
-  delete(key) {
+  delete(key, options = { resizing: false }) {
     const { data } = this;
     const index = this.hash(key);
     if (!data[index]) return;
     const deleted = data[index].delete((cv) => cv.key === key);
     if (deleted) {
-      this.items--;
+      if (!options.resizing) this.items--;
+      this.resizeIfNeeded();
       return deleted.val;
     }
   }
 
-  resize(size) {}
+  /**
+   * Determines whether or not HashTable needs resizing; returns the new size or undefined
+   * @returns {Number | undefined}
+   */
+  needsResizing() {
+    const { items, size, minSize, loadFactor } = this;
+    if (items / size > loadFactor) {
+      this.size = size * 2;
+      return true;
+    } else if (size <= minSize) {
+      return false;
+    } else if (items / size < 1 - loadFactor) {
+      this.size = size >> 1;
+      return true;
+    }
+  }
 
-  resizeIfNeeded() {}
+  /**
+   * Resizes the hash table using a specific new size
+   * @param {Number} size
+   */
+  resize() {
+    const old = this.data;
+    const size = this.size;
+    this.data = new Array(size);
+    for (let i = 0; i < old.length; i++) {
+      let queue = old[i];
+      if (!queue) continue;
+      let cn = queue.dequeue();
+      while (cn && !queue.isEmpty()) {
+        const { key, val } = cn.val;
+        this.set(key, val, { resizing: true });
+        cn = queue.dequeue();
+      }
+    }
+  }
 
-  getKeys() {}
+  /**
+   * Resizes the HashTable if needed by invoking this.needsResizing and this.resize
+   */
+  resizeIfNeeded() {
+    const shouldResize = this.needsResizing();
+    if (shouldResize) this.resize();
+  }
 }
 
 module.exports = HashTable;

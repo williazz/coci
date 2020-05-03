@@ -168,6 +168,23 @@ describe('LinkedList', () => {
     });
   });
 
+  describe('toArray', () => {
+    it('should map to an array', (done) => {
+      const LL = new LinkedList().range(100);
+      const arr = LL.toArray();
+      expect(deepEqual(arr, _.range(100), { showErrors: true })).toBeTrue();
+      expect(deepEqual(arr, _.range(100, 200))).toBeFalse();
+      done();
+    });
+
+    it('should map to a specific callback', (done) => {
+      const LL = new LinkedList().range(100, 200);
+      const arr = LL.toArray((cv) => cv - 100);
+      expect(deepEqual(arr, _.range(100), { showErrors: true })).toBeTrue();
+      done();
+    });
+  });
+
   describe('fromArray', () => {
     it('should build a list with numbers 0-4', (done) => {
       const my = new LinkedList().fromArray(_.range(5));
@@ -235,6 +252,18 @@ describe('LinkedList', () => {
         expect(cn).toEqual(null);
         done();
       });
+    });
+  });
+  describe('iterate', () => {
+    it('should iterate through the entire list', (done) => {
+      const LL = new LinkedList().range(50);
+      const mem = [];
+      LL.iterate((cv) => {
+        expect(mem[cv]).toBeUndefined();
+        mem[cv] = cv;
+      });
+      expect(mem.join('')).toEqual(_.range(50).join(''));
+      done();
     });
   });
 });

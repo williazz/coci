@@ -1,1 +1,1 @@
-module.exports = require('Queue.js');
+module.exports = require('./Queue.js');

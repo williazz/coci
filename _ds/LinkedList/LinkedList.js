@@ -145,11 +145,12 @@ class LinkedList {
    * Builds an array from LL
    * @returns {Array}
    */
-  toArray() {
+  toArray(callback = (cv) => cv) {
     const arr = [];
     let cn = this.head;
     while (cn) {
-      arr.push(cn.val);
+      const val = callback(cn.val);
+      arr.push(val);
       cn = cn.next;
     }
     return arr;
@@ -209,6 +210,18 @@ class LinkedList {
     const range = _.range(start, end, incr);
     this.fromArray(range);
     return this;
+  }
+
+  /**
+   * Iterates thru the entire LinkedList
+   * @param {*} callback
+   */
+  iterate(callback = () => {}) {
+    let cn = this.head;
+    while (cn) {
+      callback(cn.val);
+      cn = cn.next;
+    }
   }
 }
 

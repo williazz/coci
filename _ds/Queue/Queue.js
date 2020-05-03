@@ -1,4 +1,5 @@
 const LinkedList = require('../LinkedList');
+const LinkedListNode = require('../LinkedList/LinkedListNode.js');
 
 class Queue extends LinkedList {
   constructor() {
@@ -21,7 +22,7 @@ class Queue extends LinkedList {
    */
   dequeue() {
     const popped = this.deleteHead();
-    if (popped instanceof Object && popped.hasOwnProperty('val'))
+    if (popped instanceof LinkedListNode && popped.hasOwnProperty('val'))
       return popped.val;
     else return null;
   }
