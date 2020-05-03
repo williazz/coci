@@ -1,5 +1,6 @@
 const _ = require('underscore');
-const Node = (val, next = null) => ({ val, next });
+const LinkedListNode = require('./LinkedListNode.js');
+const deepEqual = require('../../_util/deepEqual.js');
 
 /**
  * LinkedList
@@ -7,10 +8,10 @@ const Node = (val, next = null) => ({ val, next });
  */
 class LinkedList {
   constructor() {
-    /**@property {LLNode} */
+    /**@property {LinkedListNode} */
     this.head = null;
 
-    /**@property {LLNode} */
+    /**@property {LinkedListNode} */
     this.tail = null;
 
     // /**@property {Number} */
@@ -20,70 +21,73 @@ class LinkedList {
   /**
    * Appends a node to end of LL
    * @param {*} val
-   * @return {LinkedList}
+   * @return {LinkedListNode}
    */
-
   append(val) {
-    const node = Node(val);
+    const node = new LinkedListNode(val);
     if (!this.head) {
       this.head = this.tail = node;
     } else {
       this.tail.next = node;
       this.tail = this.tail.next;
     }
-    return this;
+    return node;
   }
 
   /**
    * Prepends a node to beginning of LL
    * @param {*} val
-   * @returns {LinkedList}
+   * @returns {LinkedListNode}
    */
-
   prepend(val) {
-    const node = Node(val);
+    const node = new LinkedListNode(val);
     if (!this.tail) {
       this.tail = this.head = node;
     } else {
       node.next = this.head;
       this.head = node;
     }
-    return this;
+    return node;
   }
 
   /**
    * Deletes a node with specific val from LL
    * @param {*} val
-   * @returns {LinkedList}
+   * @returns {LinkedListNode}
    */
-
   delete(val) {
-    if (this.head.val === val) {
+    if (deepEqual(this.head.val, val)) {
       this.head = this.head.next;
     } else {
       let cn = this.head;
       while (cn) {
-        if (cn.next && cn.next.val === val) {
+        if (cn.next && deepEqual(cn.next.val, val)) {
+          const deleted = cn.next;
           cn.next = cn.next.next;
-          break;
+          return deleted;
         }
         cn = cn.next;
       }
     }
-    return this;
   }
 
   /**
    * Finds a node with specific val from LL
-   * @param {*} val
-   * @returns {LLNode}
+   * @param {* | Function} query - query either is the value to be searched for; OR, it can be a callback that takes two parameters: query(currentValue, deepEqual), where deepEqual is a function that performs a deep equality check
+   * @returns {LinkedListNode}
    */
-
-  find(val) {
+  find(query) {
     let cn = this.head;
-    while (cn) {
-      if (cn.val === val) return cn;
-      cn = cn.next;
+    if (query instanceof Function) {
+      while (cn) {
+        if (query(cn.val, deepEqual)) return cn;
+        cn = cn.next;
+      }
+    } else {
+      while (cn) {
+        if (deepEqual(cn.val, query)) return cn;
+        cn = cn.next;
+      }
     }
   }
 
@@ -105,7 +109,6 @@ class LinkedList {
    * Removes the tail from a LL
    * @returns {LinkedList}
    */
-
   deleteTail() {
     const popped = this.tail;
     if (this.head === this.tail) {
@@ -127,7 +130,6 @@ class LinkedList {
    * @param {Array} values
    * @returns {LinkedList}
    */
-
   fromArray(values = []) {
     this.tail = this.head = null;
     for (let i = 0; i < values.length; i++) this.append(values[i]);
@@ -138,7 +140,6 @@ class LinkedList {
    * Builds an array from LL
    * @returns {Array}
    */
-
   toArray() {
     const arr = [];
     let cn = this.head;
@@ -154,7 +155,6 @@ class LinkedList {
    * @param {*} delimiter
    * @returns {Array}
    */
-
   toString(delimiter = '') {
     return this.toArray().join(delimiter);
   }
@@ -177,7 +177,6 @@ class LinkedList {
    * Reverses a LL
    * @returns {LinkedList}
    */
-
   reverse() {
     let head = this.head;
     let tail = null;

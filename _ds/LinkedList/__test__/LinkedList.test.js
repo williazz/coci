@@ -1,5 +1,7 @@
 const LinkedList = require('../LinkedList.js');
+const LinkedListNode = require('../LinkedListNode.js');
 const _ = require('underscore');
+const deepEqual = require('../../../_util/deepEqual.js');
 
 describe('LinkedList', () => {
   describe('append', () => {
@@ -17,6 +19,11 @@ describe('LinkedList', () => {
 
     it('should have length 5', (done) => {
       expect(LL.toArray().length).toEqual(5);
+      done();
+    });
+
+    it('should return a LinkedListNode', (done) => {
+      expect(LL.append(0) instanceof LinkedListNode).toBeTrue();
       done();
     });
   });
@@ -62,9 +69,30 @@ describe('LinkedList', () => {
       }
       done();
     });
+
     it('does not find an element not in the LL', (done) => {
       expect(LL.find(3000)).toBeFalsy();
       done();
+    });
+
+    it('should accept a comparator callback', (done) => {
+      const cb = (cv) => cv === 10;
+      const find = LL.find(cb);
+      expect(find.val).toEqual(10);
+      done();
+    });
+
+    it('should return a LinkedListNode only after a successful search', (done) => {
+      expect(LL.find(3) instanceof LinkedListNode).toBeTrue();
+      expect(LL.find(-5) instanceof LinkedListNode).toBeFalse();
+      done();
+    });
+
+    it('should have callback pass deepEqual as the second arg', (done) => {
+      LL.find((curVal, cb) => {
+        expect(cb).toEqual(deepEqual);
+        done();
+      });
     });
   });
 
