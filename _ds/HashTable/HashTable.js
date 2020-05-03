@@ -39,7 +39,7 @@ class HashTable {
     const index = this.hash(key);
     if (!data[index]) data[index] = new LinkedList();
     let node = data[index].find((cv, deepEqual) => deepEqual(cv.key, key));
-    if (node) node.val.val = { key, val };
+    if (node) node.val.val = val;
     else node = data[index].append({ key, val });
     return node.val;
   }
@@ -52,7 +52,8 @@ class HashTable {
     const { data } = this;
     const index = this.hash(key);
     if (!data[index]) return;
-    else return data[index].find(key);
+    const gotten = data[index].find((cv, deepEqual) => deepEqual(cv.key, key));
+    if (gotten) return gotten.val;
   }
 
   delete(key) {}

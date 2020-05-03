@@ -11,6 +11,7 @@ describe('HashTable', () => {
     it('should be within the limit', (done) => {
       expect(HT.hash(235235) < 32).toBeTrue();
       expect(HT.hash('asdf345artrhrf329??>') < 32).toBeTrue();
+      expect(HT.hash({ isThisAnObject: 'why yes it is' }) < 32).toBeTrue();
       expect(
         HT.hash(() => {
           return;
@@ -37,7 +38,26 @@ describe('HashTable', () => {
     });
   });
 
-  describe('get', () => {});
+  describe('get', () => {
+    it('should only find key value string pairs that exist', (done) => {
+      const key = 'dogs';
+      const val = 'are better than cats';
+      HT.set(key, val);
+      expect(HT.get(key).val).toEqual(val);
+      expect(HT.get('hocus pocus')).toBeUndefined();
+      done();
+    });
+
+    it('should work with objects', (done) => {
+      const key = { keyAsAnObject: true };
+      const val = { hello: 'there' };
+      HT.set(key, val);
+      expect(HT.get(key).val).toEqual(val);
+      expect(HT.get('hocus pocus')).toBeUndefined();
+      done();
+    });
+  });
+
   describe('delete', () => {});
   describe('resize', () => {});
   describe('getKeys', () => {});

@@ -48,16 +48,23 @@ describe('LinkedList', () => {
   describe('delete', () => {
     let LL = new LinkedList().range(30);
     LL.delete(13);
-    LL = LL.toArray();
+    const arr = LL.toArray();
 
     it('should delete number 13 from a list of 0-29', (done) => {
-      expect(LL[13]).toEqual(14);
+      expect(arr[13]).toEqual(14);
       done();
     });
 
     it('should have correct length', (done) => {
-      expect(LL.length).toEqual(29);
+      expect(arr.length).toEqual(29);
       done();
+    });
+
+    it('should have callback pass deepEqual as the second arg', (done) => {
+      LL.delete((curVal, cb) => {
+        expect(cb).toBe(deepEqual);
+        done();
+      });
     });
   });
 

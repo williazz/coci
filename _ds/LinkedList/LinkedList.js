@@ -52,16 +52,21 @@ class LinkedList {
 
   /**
    * Deletes a node with specific val from LL
-   * @param {*} val
+   * @param {*} query - query either is the value to be searched for; OR, it can be a callback that receives two parameters: query(currentValue, deepEqual), where deepEqual is a function that performs a deep equality check
    * @returns {LinkedListNode}
    */
-  delete(val) {
-    if (deepEqual(this.head.val, val)) {
+  delete(query) {
+    const comparator = (cv) => {
+      if (query instanceof Function) return query(cv, deepEqual);
+      else return deepEqual(cv, query);
+    };
+
+    if (comparator(this.head.val)) {
       this.head = this.head.next;
     } else {
       let cn = this.head;
       while (cn) {
-        if (cn.next && deepEqual(cn.next.val, val)) {
+        if (cn.next && comparator(cn.next.val)) {
           const deleted = cn.next;
           cn.next = cn.next.next;
           return deleted;
@@ -73,21 +78,19 @@ class LinkedList {
 
   /**
    * Finds a node with specific val from LL
-   * @param {* | Function} query - query either is the value to be searched for; OR, it can be a callback that takes two parameters: query(currentValue, deepEqual), where deepEqual is a function that performs a deep equality check
+   * @param {*} query - query either is the value to be searched for; OR, it can be a callback that receives two parameters: query(currentValue, deepEqual), where deepEqual is a function that performs a deep equality check
    * @returns {LinkedListNode}
    */
   find(query) {
+    const comparator = (cv) => {
+      if (query instanceof Function) return query(cv, deepEqual);
+      else return deepEqual(cv, query);
+    };
+
     let cn = this.head;
-    if (query instanceof Function) {
-      while (cn) {
-        if (query(cn.val, deepEqual)) return cn;
-        cn = cn.next;
-      }
-    } else {
-      while (cn) {
-        if (deepEqual(cn.val, query)) return cn;
-        cn = cn.next;
-      }
+    while (cn) {
+      if (comparator(cn.val)) return cn;
+      cn = cn.next;
     }
   }
 
