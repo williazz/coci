@@ -62,7 +62,9 @@ class LinkedList {
     };
 
     if (comparator(this.head.val)) {
+      const deleted = this.head;
       this.head = this.head.next;
+      return deleted;
     } else {
       let cn = this.head;
       while (cn) {

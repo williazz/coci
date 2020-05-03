@@ -66,6 +66,14 @@ describe('LinkedList', () => {
         done();
       });
     });
+
+    it('should return the deleted node', (done) => {
+      const key = 'key';
+      LL.append({ key });
+      const deleted = LL.delete((cv, deepEqual) => deepEqual(cv.key, key));
+      expect(deleted.val.key).toEqual(key);
+      done();
+    });
   });
 
   describe('find', () => {

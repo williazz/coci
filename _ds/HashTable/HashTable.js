@@ -29,7 +29,7 @@ class HashTable {
   }
 
   /**
-   * Creates a key value pair
+   * Creates a key value pair, increments this.items when new pairs are created, but not updated
    * @param {*} key
    * @param {*} val
    * @returns {*}
@@ -40,7 +40,10 @@ class HashTable {
     if (!data[index]) data[index] = new LinkedList();
     let node = data[index].find((cv, deepEqual) => deepEqual(cv.key, key));
     if (node) node.val.val = val;
-    else node = data[index].append({ key, val });
+    else {
+      node = data[index].append({ key, val });
+      this.items++;
+    }
     return node.val;
   }
 
@@ -53,12 +56,41 @@ class HashTable {
     const index = this.hash(key);
     if (!data[index]) return;
     const gotten = data[index].find((cv, deepEqual) => deepEqual(cv.key, key));
-    if (gotten) return gotten.val;
+    if (gotten) return gotten.val.val;
   }
 
-  delete(key) {}
+  /**
+   * Gets all of the key value pairs and writes to an array
+   * @returns {Array}
+   */
+  toArray() {
+    const res = [];
+    const { data } = this;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i]) res.push(...data[i].toArray());
+    }
+    return res;
+  }
+
+  /**
+   * Deletes and returns a key value pair if it exists
+   * @param {*} key
+   * @returns {*} - The deleted value
+   */
+  delete(key) {
+    const { data } = this;
+    const index = this.hash(key);
+    if (!data[index]) return;
+    const deleted = data[index].delete((cv) => cv.key === key);
+    if (deleted) {
+      this.items--;
+      return deleted.val;
+    }
+  }
 
   resize(size) {}
+
+  resizeIfNeeded() {}
 
   getKeys() {}
 }
