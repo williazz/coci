@@ -16,10 +16,9 @@ describe('Heap', () => {
 
     it('should accept a correct heap', (done) => {
       const minHeap = new Heap();
-      minHeap.data = _.range(50);
+      minHeap.data.push(..._.range(50));
       try {
         minHeap.checkIntegrity();
-        expect(true).toBeFalse();
       } catch (err) {
         expect(err).toBeUndefined();
       }
@@ -28,7 +27,7 @@ describe('Heap', () => {
 
     it('should reject an incorrect heap', (done) => {
       const minHeap = new Heap();
-      minHeap.data = _.range(50).reverse();
+      minHeap.data = [null, ..._.range(50).reverse()];
       try {
         minHeap.checkIntegrity();
         expect(true).toBeFalse();
@@ -39,10 +38,8 @@ describe('Heap', () => {
     });
 
     it('should reject a misplaced first item', (done) => {
-      const data = _.range(20);
-      data[0] = 30;
       const minHeap = new Heap();
-      minHeap.data = data;
+      minHeap.data.push(..._.range(20));
       try {
         minHeap.checkIntegrity();
         expect(true).toBeFalse();
@@ -53,10 +50,9 @@ describe('Heap', () => {
     });
 
     it('should reject a misplaced last item', (done) => {
-      const data = _.range(20);
-      data[19] = 7;
       const minHeap = new Heap();
-      minHeap.data = data;
+      minHeap.data.push(..._.range(20));
+      minHeap[20] = -5;
       try {
         minHeap.checkIntegrity();
         expect(true).toBeFalse();
@@ -81,8 +77,8 @@ describe('Heap', () => {
 
     it('should swap misplaced items', (done) => {
       const minHeap = new Heap();
-      minHeap.data = [1, 0];
-      const swapped = minHeap.swapIfNeeded(0, 1);
+      minHeap.data = [null, 1, 0];
+      const swapped = minHeap.swapIfNeeded(1, 2);
       expect(swapped).toBeTrue();
       expect(minHeap.data.join('')).toEqual('01');
       done();
@@ -90,8 +86,8 @@ describe('Heap', () => {
 
     it('should not swap correctly placed items', (done) => {
       const minHeap = new Heap();
-      minHeap.data = [0, 1];
-      const swapped = minHeap.swapIfNeeded(0, 1);
+      minHeap.data = [null, 0, 1];
+      const swapped = minHeap.swapIfNeeded(1, 2);
       expect(swapped).toBeFalse();
       expect(minHeap.data.join('')).toEqual('01');
       done();
@@ -101,8 +97,8 @@ describe('Heap', () => {
   describe('heapifyUp', () => {
     it('should heapify a misplaced last item', (done) => {
       const minHeap = new Heap();
-      minHeap.data = _.range(20);
-      minHeap.data[19] = 1;
+      minHeap.data = [null, ..._.range(20)];
+      minHeap.data[20] = 1;
       minHeap.heapifyUp();
       try {
         minHeap.checkIntegrity();
@@ -114,12 +110,12 @@ describe('Heap', () => {
 
     it('should heapify a new min at last index', (done) => {
       const minHeap = new Heap();
-      minHeap.data = _.range(20);
-      minHeap.data[19] = -5;
+      minHeap.data = [null, ..._.range(20)];
+      minHeap.data[20] = -5;
       minHeap.heapifyUp();
       try {
         minHeap.checkIntegrity();
-        expect(minHeap.data[0]).toEqual(-5);
+        expect(minHeap.root).toEqual(-5);
       } catch (err) {
         expect(err).toBeUndefined();
       }
@@ -129,8 +125,8 @@ describe('Heap', () => {
 
   describe('heapifyDown', () => {
     it('should heapify a misplaced root', (done) => {
-      const data = _.range(20);
-      data[0] = 10;
+      const data = [null, ..._.range(20)];
+      data[1] = 10;
       const minHeap = new Heap();
       minHeap.data = data;
       minHeap.heapifyDown();
@@ -143,7 +139,7 @@ describe('Heap', () => {
     });
 
     it('should heapfiy down from the specificed start index', (done) => {
-      const data = _.range(20);
+      const data = [null, ..._.range(20)];
       data[10] = 50;
       const minHeap = new Heap();
       minHeap.data = data;
@@ -228,8 +224,18 @@ describe('Heap', () => {
         minHeap.insert(i);
       }
       const root = minHeap.deleteRoot();
-      expect(minHeap.length).toEqual(99);
+      expect(minHeap.length).toEqual(100);
       expect(minHeap.includes(root)).toBeFalse();
+      done();
+    });
+
+    it('should work many times', (done) => {
+      const minHeap = new Heap();
+      for (let i = 0; i < 200; i++) minHeap.insert(i);
+      for (let i = 0; i < 200; i++) {
+        expect(minHeap.deleteRoot()).toEqual(i);
+      }
+      expect(minHeap.length).toEqual(1);
       done();
     });
   });
