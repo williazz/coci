@@ -63,14 +63,14 @@ class LinkedList {
 
     if (comparator(this.head.val)) {
       const deleted = this.head;
-      this.head = this.head.next;
+      this.head = deleted.next;
       return deleted;
     } else {
       let cn = this.head;
       while (cn) {
         if (cn.next && comparator(cn.next.val)) {
           const deleted = cn.next;
-          cn.next = cn.next.next;
+          cn.next = deleted.next;
           return deleted;
         }
         cn = cn.next;
@@ -217,11 +217,11 @@ class LinkedList {
    * @param {*} callback
    * @param {Object} options -
    */
-  iterate(callback = () => {}, options = { delete: false }) {
+  iterate(callback = () => {}, options = { deleteAfter: false }) {
     let cn = this.head;
     while (cn) {
       callback(cn.val);
-      if (options.delete) this.head = this.head.next;
+      if (options.deleteAfter) this.head = this.head.next;
       cn = cn.next;
     }
   }

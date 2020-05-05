@@ -266,10 +266,10 @@ describe('LinkedList', () => {
       done();
     });
 
-    it('should accept option.delete', (done) => {
+    it('should accept option.deleteAfter', (done) => {
       const LL = new LinkedList().range(50);
       let i = 0;
-      LL.iterate((cv) => expect(cv).toEqual(i++), { delete: true });
+      LL.iterate((cv) => expect(cv).toEqual(i++), { deleteAfter: true });
       expect(LL.toString()).toEqual('');
       done();
     });

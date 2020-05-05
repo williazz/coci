@@ -1,4 +1,4 @@
-const Queue = require('../Queue');
+const LinkedList = require('../LinkedList');
 
 /**
  * HashTable
@@ -11,16 +11,6 @@ class HashTable {
     this.minSize = 11;
     this.size = size || this.minSize;
     this.loadFactor = 3 / 4;
-
-    this.hash = this.hash.bind(this);
-    this.set = this.set.bind(this);
-    this.get = this.get.bind(this);
-    this.iterate = this.iterate.bind(this);
-    this.toArray = this.toArray.bind(this);
-    this.delete = this.delete.bind(this);
-    this.needsResizing = this.needsResizing.bind(this);
-    this.resize = this.resize.bind(this);
-    this.resizeIfNeeded = this.resizeIfNeeded.bind(this);
   }
 
   /**
@@ -48,15 +38,19 @@ class HashTable {
    */
   set(key, val, options = { resizing: false }) {
     const { data } = this;
+    const { resizing } = options;
     const index = this.hash(key);
-    if (!data[index]) data[index] = new Queue();
+    if (!data[index]) data[index] = new LinkedList();
     let node = data[index].find((cv, deepEqual) => deepEqual(cv.key, key));
     if (node) node.val.val = val;
     else {
       node = data[index].append({ key, val });
-      if (!options.resizing) this.items++;
+      if (!resizing) {
+        this.items++;
+        this.resizeIfNeeded();
+      }
     }
-    this.resizeIfNeeded();
+
     return node.val;
   }
 
@@ -79,7 +73,7 @@ class HashTable {
   iterate(callback = () => {}) {
     const { data } = this;
     for (let i = 0; i < data.length; i++) {
-      if (data[i]) data[i].iterate(callback);
+      if (data[i] instanceof LinkedList) data[i].iterate(callback);
     }
   }
 
@@ -92,7 +86,7 @@ class HashTable {
     const res = [];
     const { data } = this;
     for (let i = 0; i < data.length; i++) {
-      if (data[i] instanceof Queue) {
+      if (data[i] instanceof LinkedList) {
         res.push(...data[i].toArray(callback));
       }
     }
@@ -104,13 +98,13 @@ class HashTable {
    * @param {*} key
    * @returns {*} - The deleted value
    */
-  delete(key, options = { resizing: false }) {
+  delete(key) {
     const { data } = this;
     const index = this.hash(key);
-    if (!data[index]) return;
+    if (!(data[index] instanceof LinkedList)) return;
     const deleted = data[index].delete((cv) => cv.key === key);
     if (deleted) {
-      if (!options.resizing) this.items--;
+      this.items--;
       this.resizeIfNeeded();
       return deleted.val;
     }
@@ -118,32 +112,31 @@ class HashTable {
 
   /**
    * Determines whether or not HashTable needs resizing; returns the new size or undefined
-   * @returns {Number | undefined}
+   * @returns {Number | false}
    */
   needsResizing() {
     const { items, size, minSize, loadFactor } = this;
-    if (items / size > loadFactor) return size * 2;
-    else if (size === minSize) return false;
-    else if (items / size < 1 - loadFactor) return size >> 1;
+    if (items / size >= loadFactor) return size * 2;
+    else if (items / size <= 1 - loadFactor) {
+      if (size === minSize) return false;
+      else return size >> 1;
+    }
   }
 
   /**
    * Resizes the hash table using a specific new size
    * @param {Number} size
    */
-  resize() {
+  resize(size) {
     const old = this.data;
-    const size = this.size;
+    this.size = size;
     this.data = new Array(size);
     for (let i = 0; i < old.length; i++) {
-      let queue = old[i];
-      if (!queue) continue;
-      let cn = queue.dequeue();
-      while (cn && !queue.isEmpty()) {
-        const { key, val } = cn.val;
-        this.set(key, val, { resizing: true });
-        cn = queue.dequeue();
-      }
+      const LL = old[i];
+      if (!(LL instanceof LinkedList)) continue;
+      LL.iterate(({ key, val }) => this.set(key, val, { resizing: true }), {
+        deleteAfter: true,
+      });
     }
   }
 
@@ -151,8 +144,9 @@ class HashTable {
    * Resizes the HashTable if needed by invoking this.needsResizing and this.resize
    */
   resizeIfNeeded() {
-    const shouldResize = this.needsResizing();
-    if (shouldResize) this.resize();
+    const size = this.needsResizing();
+    if (!size) return;
+    this.resize(size);
   }
 }
 
