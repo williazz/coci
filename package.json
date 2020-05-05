@@ -1,7 +1,7 @@
 {
   "name": "coci-js",
   "version": "1.0.0",
-  "description": "Solutions to Cracking the Code Interview in JS",
+  "description": "My CS fundamentals training journal. Includes implementations of ds and algos, solutions to COCI and leetcode, and testing suites in the Node runtime",
   "scripts": {
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"

@@ -74,9 +74,11 @@ describe('HashTable', () => {
 
   describe('toArray', () => {
     it('should have length match items', (done) => {
-      for (let i = 0; i < 100; i++) HT.set(i, i);
+      const HT = new HashTable();
+      for (let i = 0; i < 10; i++) HT.set(i, i);
       const arr = HT.toArray();
-      expect(arr.length).toEqual(arr.items);
+      debugger;
+      expect(arr.length).toEqual(HT.items);
       done();
     });
     // it('should get everything from the hash table', (done) => {
@@ -128,6 +130,23 @@ describe('HashTable', () => {
         expect(mem[cv.val]).toEqual(cv.val);
       });
       expect(mem.join('')).toEqual(_.range(50).join(''));
+      done();
+    });
+  });
+
+  describe('needsResizing', () => {
+    it('should need resizing when load factor is exceeded', (done) => {
+      const HT = new HashTable();
+      HT.items = 10;
+      const needsResizing = HT.needsResizing();
+      expect(needsResizing).toBeTrue();
+      expect(HT.size).toEqual(22);
+      done();
+    });
+
+    it('should need resizing when load factor is exceeded many times', (done) => {
+      const HT = new HashTable();
+      let size = 11;
       done();
     });
   });

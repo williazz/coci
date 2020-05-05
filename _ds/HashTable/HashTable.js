@@ -11,6 +11,16 @@ class HashTable {
     this.minSize = 11;
     this.size = size || this.minSize;
     this.loadFactor = 3 / 4;
+
+    this.hash = this.hash.bind(this);
+    this.set = this.set.bind(this);
+    this.get = this.get.bind(this);
+    this.iterate = this.iterate.bind(this);
+    this.toArray = this.toArray.bind(this);
+    this.delete = this.delete.bind(this);
+    this.needsResizing = this.needsResizing.bind(this);
+    this.resize = this.resize.bind(this);
+    this.resizeIfNeeded = this.resizeIfNeeded.bind(this);
   }
 
   /**
@@ -82,7 +92,9 @@ class HashTable {
     const res = [];
     const { data } = this;
     for (let i = 0; i < data.length; i++) {
-      if (data[i]) res.push(...data[i].toArray(callback));
+      if (data[i] instanceof Queue) {
+        res.push(...data[i].toArray(callback));
+      }
     }
     return res;
   }
@@ -110,15 +122,9 @@ class HashTable {
    */
   needsResizing() {
     const { items, size, minSize, loadFactor } = this;
-    if (items / size > loadFactor) {
-      this.size = size * 2;
-      return true;
-    } else if (size <= minSize) {
-      return false;
-    } else if (items / size < 1 - loadFactor) {
-      this.size = size >> 1;
-      return true;
-    }
+    if (items / size > loadFactor) return size * 2;
+    else if (size === minSize) return false;
+    else if (items / size < 1 - loadFactor) return size >> 1;
   }
 
   /**

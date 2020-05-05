@@ -265,5 +265,13 @@ describe('LinkedList', () => {
       expect(mem.join('')).toEqual(_.range(50).join(''));
       done();
     });
+
+    it('should accept option.delete', (done) => {
+      const LL = new LinkedList().range(50);
+      let i = 0;
+      LL.iterate((cv) => expect(cv).toEqual(i++), { delete: true });
+      expect(LL.toString()).toEqual('');
+      done();
+    });
   });
 });

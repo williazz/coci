@@ -215,11 +215,13 @@ class LinkedList {
   /**
    * Iterates thru the entire LinkedList
    * @param {*} callback
+   * @param {Object} options -
    */
-  iterate(callback = () => {}) {
+  iterate(callback = () => {}, options = { delete: false }) {
     let cn = this.head;
     while (cn) {
       callback(cn.val);
+      if (options.delete) this.head = this.head.next;
       cn = cn.next;
     }
   }

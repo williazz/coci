@@ -22,9 +22,7 @@ class Queue extends LinkedList {
    */
   dequeue() {
     const popped = this.deleteHead();
-    if (popped instanceof LinkedListNode && popped.hasOwnProperty('val'))
-      return popped.val;
-    else return null;
+    if (popped instanceof LinkedListNode) return popped.val;
   }
 
   /**
