@@ -1,5 +1,6 @@
 const _ = require('underscore');
-const Node = (val, next = null) => ({ val, next });
+const LinkedListNode = require('./LinkedListNode.js');
+const deepEqual = require('../../_util/deepEqual.js');
 
 /**
  * LinkedList
@@ -7,10 +8,10 @@ const Node = (val, next = null) => ({ val, next });
  */
 class LinkedList {
   constructor() {
-    /**@property {LLNode} */
+    /**@property {LinkedListNode} */
     this.head = null;
 
-    /**@property {LLNode} */
+    /**@property {LinkedListNode} */
     this.tail = null;
 
     // /**@property {Number} */
@@ -20,69 +21,77 @@ class LinkedList {
   /**
    * Appends a node to end of LL
    * @param {*} val
-   * @return {LinkedList}
+   * @return {LinkedListNode}
    */
-
   append(val) {
-    const node = Node(val);
+    const node = new LinkedListNode(val);
     if (!this.head) {
       this.head = this.tail = node;
     } else {
       this.tail.next = node;
       this.tail = this.tail.next;
     }
-    return this;
+    return node;
   }
 
   /**
    * Prepends a node to beginning of LL
    * @param {*} val
-   * @returns {LinkedList}
+   * @returns {LinkedListNode}
    */
-
   prepend(val) {
-    const node = Node(val);
+    const node = new LinkedListNode(val);
     if (!this.tail) {
       this.tail = this.head = node;
     } else {
       node.next = this.head;
       this.head = node;
     }
-    return this;
+    return node;
   }
 
   /**
    * Deletes a node with specific val from LL
-   * @param {*} val
-   * @returns {LinkedList}
+   * @param {*} query - query either is the value to be searched for; OR, it can be a callback that receives two parameters: query(currentValue, deepEqual), where deepEqual is a function that performs a deep equality check
+   * @returns {LinkedListNode}
    */
+  delete(query) {
+    const comparator = (cv) => {
+      if (query instanceof Function) return query(cv, deepEqual);
+      else return deepEqual(cv, query);
+    };
 
-  delete(val) {
-    if (this.head.val === val) {
-      this.head = this.head.next;
+    if (comparator(this.head.val)) {
+      const deleted = this.head;
+      this.head = deleted.next;
+      return deleted;
     } else {
       let cn = this.head;
       while (cn) {
-        if (cn.next && cn.next.val === val) {
-          cn.next = cn.next.next;
-          break;
+        if (cn.next && comparator(cn.next.val)) {
+          const deleted = cn.next;
+          cn.next = deleted.next;
+          return deleted;
         }
         cn = cn.next;
       }
     }
-    return this;
   }
 
   /**
    * Finds a node with specific val from LL
-   * @param {*} val
-   * @returns {LLNode}
+   * @param {*} query - query either is the value to be searched for; OR, it can be a callback that receives two parameters: query(currentValue, deepEqual), where deepEqual is a function that performs a deep equality check
+   * @returns {LinkedListNode}
    */
+  find(query) {
+    const comparator = (cv) => {
+      if (query instanceof Function) return query(cv, deepEqual);
+      else return deepEqual(cv, query);
+    };
 
-  find(val) {
     let cn = this.head;
     while (cn) {
-      if (cn.val === val) return cn;
+      if (comparator(cn.val)) return cn;
       cn = cn.next;
     }
   }
@@ -105,7 +114,6 @@ class LinkedList {
    * Removes the tail from a LL
    * @returns {LinkedList}
    */
-
   deleteTail() {
     const popped = this.tail;
     if (this.head === this.tail) {
@@ -127,7 +135,6 @@ class LinkedList {
    * @param {Array} values
    * @returns {LinkedList}
    */
-
   fromArray(values = []) {
     this.tail = this.head = null;
     for (let i = 0; i < values.length; i++) this.append(values[i]);
@@ -138,12 +145,12 @@ class LinkedList {
    * Builds an array from LL
    * @returns {Array}
    */
-
-  toArray() {
+  toArray(callback = (cv) => cv) {
     const arr = [];
     let cn = this.head;
     while (cn) {
-      arr.push(cn.val);
+      const val = callback(cn.val);
+      arr.push(val);
       cn = cn.next;
     }
     return arr;
@@ -154,7 +161,6 @@ class LinkedList {
    * @param {*} delimiter
    * @returns {Array}
    */
-
   toString(delimiter = '') {
     return this.toArray().join(delimiter);
   }
@@ -177,7 +183,6 @@ class LinkedList {
    * Reverses a LL
    * @returns {LinkedList}
    */
-
   reverse() {
     let head = this.head;
     let tail = null;
@@ -205,6 +210,20 @@ class LinkedList {
     const range = _.range(start, end, incr);
     this.fromArray(range);
     return this;
+  }
+
+  /**
+   * Iterates thru the entire LinkedList
+   * @param {*} callback
+   * @param {Object} options - deleteAfter: deletes the current node
+   */
+  iterate(callback = () => {}, options = { deleteAfter: false }) {
+    let cn = this.head;
+    while (cn) {
+      callback(cn.val);
+      if (options.deleteAfter) this.head = this.head.next;
+      cn = cn.next;
+    }
   }
 }
 

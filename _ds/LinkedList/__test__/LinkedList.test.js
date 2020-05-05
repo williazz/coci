@@ -1,5 +1,7 @@
 const LinkedList = require('../LinkedList.js');
+const LinkedListNode = require('../LinkedListNode.js');
 const _ = require('underscore');
+const deepEqual = require('../../../_util/deepEqual.js');
 
 describe('LinkedList', () => {
   describe('append', () => {
@@ -17,6 +19,11 @@ describe('LinkedList', () => {
 
     it('should have length 5', (done) => {
       expect(LL.toArray().length).toEqual(5);
+      done();
+    });
+
+    it('should return a LinkedListNode', (done) => {
+      expect(LL.append(0) instanceof LinkedListNode).toBeTrue();
       done();
     });
   });
@@ -41,15 +48,30 @@ describe('LinkedList', () => {
   describe('delete', () => {
     let LL = new LinkedList().range(30);
     LL.delete(13);
-    LL = LL.toArray();
+    const arr = LL.toArray();
 
     it('should delete number 13 from a list of 0-29', (done) => {
-      expect(LL[13]).toEqual(14);
+      expect(arr[13]).toEqual(14);
       done();
     });
 
     it('should have correct length', (done) => {
-      expect(LL.length).toEqual(29);
+      expect(arr.length).toEqual(29);
+      done();
+    });
+
+    it('should have callback pass deepEqual as the second arg', (done) => {
+      LL.delete((curVal, cb) => {
+        expect(cb).toBe(deepEqual);
+        done();
+      });
+    });
+
+    it('should return the deleted node', (done) => {
+      const key = 'key';
+      LL.append({ key });
+      const deleted = LL.delete((cv, deepEqual) => deepEqual(cv.key, key));
+      expect(deleted.val.key).toEqual(key);
       done();
     });
   });
@@ -62,9 +84,30 @@ describe('LinkedList', () => {
       }
       done();
     });
+
     it('does not find an element not in the LL', (done) => {
       expect(LL.find(3000)).toBeFalsy();
       done();
+    });
+
+    it('should accept a comparator callback', (done) => {
+      const cb = (cv) => cv === 10;
+      const find = LL.find(cb);
+      expect(find.val).toEqual(10);
+      done();
+    });
+
+    it('should return a LinkedListNode only after a successful search', (done) => {
+      expect(LL.find(3) instanceof LinkedListNode).toBeTrue();
+      expect(LL.find(-5) instanceof LinkedListNode).toBeFalse();
+      done();
+    });
+
+    it('should have callback pass deepEqual as the second arg', (done) => {
+      LL.find((curVal, cb) => {
+        expect(cb).toEqual(deepEqual);
+        done();
+      });
     });
   });
 
@@ -121,6 +164,23 @@ describe('LinkedList', () => {
       const arr = LL.toArray();
       expect(arr[arr.length - 1]).toEqual(24);
       expect(arr.length).toEqual(25);
+      done();
+    });
+  });
+
+  describe('toArray', () => {
+    it('should map to an array', (done) => {
+      const LL = new LinkedList().range(100);
+      const arr = LL.toArray();
+      expect(deepEqual(arr, _.range(100), { showErrors: true })).toBeTrue();
+      expect(deepEqual(arr, _.range(100, 200))).toBeFalse();
+      done();
+    });
+
+    it('should map to a specific callback', (done) => {
+      const LL = new LinkedList().range(100, 200);
+      const arr = LL.toArray((cv) => cv - 100);
+      expect(deepEqual(arr, _.range(100), { showErrors: true })).toBeTrue();
       done();
     });
   });
@@ -192,6 +252,26 @@ describe('LinkedList', () => {
         expect(cn).toEqual(null);
         done();
       });
+    });
+  });
+  describe('iterate', () => {
+    it('should iterate through the entire list', (done) => {
+      const LL = new LinkedList().range(50);
+      const mem = [];
+      LL.iterate((cv) => {
+        expect(mem[cv]).toBeUndefined();
+        mem[cv] = cv;
+      });
+      expect(mem.join('')).toEqual(_.range(50).join(''));
+      done();
+    });
+
+    it('should accept option.deleteAfter', (done) => {
+      const LL = new LinkedList().range(50);
+      let i = 0;
+      LL.iterate((cv) => expect(cv).toEqual(i++), { deleteAfter: true });
+      expect(LL.toString()).toEqual('');
+      done();
     });
   });
 });
