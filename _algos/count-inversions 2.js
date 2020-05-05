@@ -29,7 +29,7 @@ Strategy
 
  */
 
-const countInversions = arr => {
+const countInversions = (arr) => {
   let counter = 0;
   (function mergesort(a) {
     if (a.length < 2) return a;
