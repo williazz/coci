@@ -1,6 +1,10 @@
 {
   "name": "coci-js",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/williazz/coci-js.git"
+  },
   "description": "My CS fundamentals training journal. Includes implementations of ds and algos, solutions to COCI and leetcode, and testing suites in the Node runtime",
   "scripts": {
     "test": "jest",
@@ -24,6 +28,8 @@
     "faker": "^4.1.0",
     "jest": "^24.9.0",
     "jest-extended": "^0.11.5",
+    "kind-of": "^6.0.3",
+    "minimist": "^1.2.5",
     "prettier": "^1.19.1",
     "sinon": "^9.0.2"
   }
