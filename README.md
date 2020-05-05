@@ -1,6 +1,3 @@
-# Data Structures
+# Training Journal
 
-# Resources
-
-- [@trekhleb's javascript-algorithms repo](https://github.com/trekhleb/javascript-algorithms)
-- [@adam-p's markdown cheatsheet](https://github.com/adam-p/markdown-here)
+This is my CS fundamentals training journal. Includes implementations of ds and algos, solutions to COCI and leetcode, and testing suites in the Node runtime
