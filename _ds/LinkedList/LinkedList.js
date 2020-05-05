@@ -215,7 +215,7 @@ class LinkedList {
   /**
    * Iterates thru the entire LinkedList
    * @param {*} callback
-   * @param {Object} options -
+   * @param {Object} options - deleteAfter: deletes the current node
    */
   iterate(callback = () => {}, options = { deleteAfter: false }) {
     let cn = this.head;
