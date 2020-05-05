@@ -2,19 +2,11 @@
 
 ## Hashing
 
-My hash function does the following:
-
-1. Convert key into a string, and define sum = 0
-2. Choose factor = prime number 101
-3. Iterate thru str, sum += subsequent power of factor \* str.charCode(i)
+My hash function uses a prime factor of 101
 
 ## Collisions
 
-Collisions can be dealt with in many ways
-
-- Linear probing
-- Quadratic probing
-- Separate chaining
+I resolved collisions via separate chaining with my LinkedList. However, this could be considered cheating because the LinkedList relies on JavaScript's native Hash Table. In the future, I will attempt to resolve collisions via linear/quadratic probing or tupples.
 
 # Resources
 

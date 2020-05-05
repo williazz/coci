@@ -1,5 +1,3 @@
-const Queue = require('../Queue');
-
 /** Creates a Binary Heap using a comparator function
  * @class - Heap, defaults as a MinHeap
  * @param {Function} [comparator=(childVal, parentVal)] => childVal - parentVal] - determines whether or not two values should be swapped. Must return a number
@@ -94,10 +92,9 @@ class Heap {
    */
   heapifyDown(start = 1) {
     if (start < 1) return;
-    const jobs = new Queue();
-    jobs.enqueue(start);
-    while (!jobs.isEmpty()) {
-      let p = jobs.dequeue();
+    const jobs = [start];
+    while (jobs.length) {
+      let p = jobs.pop();
       const { data, comparator, swapIfNeeded, length } = this;
       while (length >> 1 >= p) {
         const c1 = p * 2;
@@ -106,7 +103,7 @@ class Heap {
         if (swapIfNeeded(p, next)) p = next;
         else break;
       }
-      if (p > 1) jobs.enqueue(p >> 1);
+      if (p > 1) jobs.push(p >> 1);
     }
   }
 

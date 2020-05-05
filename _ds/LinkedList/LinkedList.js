@@ -219,9 +219,10 @@ class LinkedList {
    */
   iterate(callback = () => {}, options = { deleteAfter: false }) {
     let cn = this.head;
+    const { deleteAfter } = options;
     while (cn) {
       callback(cn.val);
-      if (options.deleteAfter) this.head = this.head.next;
+      if (deleteAfter) this.head = this.head.next;
       cn = cn.next;
     }
   }
