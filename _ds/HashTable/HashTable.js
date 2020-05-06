@@ -2,20 +2,30 @@ const LinkedList = require('../LinkedList');
 
 /**
  * HashTable
- * @constructor
+ * @class
  */
 class HashTable {
   constructor(size) {
+    /**@property {Array} */
     this.data = new Array(size);
+
+    /**@property {Number} */
     this.items = 0;
+
+    /**@property {Number} */
     this.minSize = 11;
+
+    /**@property {Number} */
     this.size = size || this.minSize;
+
+    /**@property {Number} */
     this.loadFactor = 3 / 4;
   }
 
   /**
    * Creates an index within the HashTable size from any value
    * @param {*} key
+   * @returns {Number}
    */
   hash(key) {
     const str = String(key);
@@ -34,7 +44,7 @@ class HashTable {
    * Creates a key value pair, increments this.items when new pairs are created, but not updated
    * @param {*} key
    * @param {*} val
-   * @returns {*}
+   * @returns {*} - The set key/val pair
    */
   set(key, val, options = { resizing: false }) {
     const { data } = this;
@@ -50,13 +60,13 @@ class HashTable {
         this.resizeIfNeeded();
       }
     }
-
     return node.val;
   }
 
   /**
    * Gets a value using a key as the lookup
    * @param {*} key
+   * @returns {*} the key/val pair | undefined
    */
   get(key) {
     const { data } = this;
@@ -79,15 +89,15 @@ class HashTable {
 
   /**
    * Gets all of the key value pairs and writes to an array
-   * @param {Function} callback - A callback to selectively choose what values to receive
+   * @param {Function} [map=(cv)=>cv]
    * @returns {Array}
    */
-  toArray(callback = (cv) => cv) {
+  toArray(map = (cv) => cv) {
     const res = [];
     const { data } = this;
     for (let i = 0; i < data.length; i++) {
       if (data[i] instanceof LinkedList) {
-        res.push(...data[i].toArray(callback));
+        res.push(...data[i].toArray(map));
       }
     }
     return res;
@@ -96,7 +106,7 @@ class HashTable {
   /**
    * Deletes and returns a key value pair if it exists
    * @param {*} key
-   * @returns {*} - The deleted value
+   * @returns {*} - The deleted value | undefined
    */
   delete(key) {
     const { data } = this;
@@ -141,7 +151,7 @@ class HashTable {
   }
 
   /**
-   * Resizes the HashTable if needed by invoking this.needsResizing and this.resize
+   * Resizes the HashTable if needed
    */
   resizeIfNeeded() {
     const size = this.needsResizing();

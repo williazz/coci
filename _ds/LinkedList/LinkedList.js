@@ -4,7 +4,7 @@ const deepEqual = require('../../_util/deepEqual.js');
 
 /**
  * LinkedList
- * @constructor
+ * @class
  */
 class LinkedList {
   constructor() {
