@@ -294,7 +294,34 @@ describe('Heap', () => {
   });
 
   describe('merge', () => {
-    // const h1 = new Heap().fromArray;
+    const h1 = new Heap().fromArray(_.range(200));
+    const h2 = new Heap().fromArray(_.range(300, 500));
+    const merge = h1.merge(h2);
+    it('should be heapified', (done) => {
+      try {
+        merge.checkIntegrity();
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+      done();
+    });
+
+    it('should be lossless', (done) => {
+      expect(merge.length).toEqual(401);
+      done();
+    });
+
+    it('should preserve the previous two heaps', (done) => {
+      expect(h1.length).toEqual(201);
+      expect(h2.length).toEqual(201);
+      done();
+    });
+
+    it('should return a new heap', (done) => {
+      expect(merge).not.toBe(h1);
+      expect(merge).not.toBe(h2);
+      done();
+    });
   });
 
   describe('meld', () => {});

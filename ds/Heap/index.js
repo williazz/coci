@@ -113,8 +113,8 @@ class Heap {
 
   /**
    * Removes the last occurence of a value from the heap; and heapifies
-   * @param {*} val
-   * @returns {*} deleted value after successful deletion; else returns undefined
+   * @param {*} val - The value to delete from the heap
+   * @returns {*} Deleted value after successful deletion.
    */
   delete(val) {
     const { length, data } = this;
@@ -128,7 +128,7 @@ class Heap {
   }
 
   /**
-   * Deletes root and heapifies, returning the deleted root
+   * Deletes root and returns the deleted root. Calls siftDown
    * @returns {*} - The deleted root
    */
   deleteRoot() {
@@ -143,8 +143,8 @@ class Heap {
   }
 
   /**
-   * Replaces root and heapifies, returning the deleted root
-   * @param {*} - val to replace the root
+   * Replaces root and returns the deleted root. Calls siftDown
+   * @param {*} val - Value to replace the root
    * @returns {*} - The deleted root
    */
   replaceRoot(val) {
@@ -155,13 +155,14 @@ class Heap {
   }
 
   /**
-   * Returns the number of items
+   * Uses Array.length to get the length of the heap. Also includes the null val at index 0
    */
   get length() {
     return this.data.length;
   }
 
   /**
+   * Uses the Array.includes method to determine whether or not a value exists in the heap
    * @param {*} val
    * @returns {Boolean}
    */
@@ -183,7 +184,7 @@ class Heap {
   }
 
   /**
-   * Builds a heap from an array of values
+   * Builds and heapifies an array of values. Deletes all preexisting values from the heap
    * @param {*} vals
    */
   fromArray(vals = []) {
@@ -194,14 +195,16 @@ class Heap {
 
   /**
    * Merges this heap with another while preserving both original heaps. The new heap uses this heap's constructor
-   * @param {Heap} heap
-   * @return {Heap}
+   * @param {Heap} heap - A different heap for this heap to merge with
+   * @return {Heap} - Returns a new heap
    */
-  merge(heap = new Heap()) {
+  merge(heap) {
+    if (!(heap instanceof Heap)) return;
     const { comparator, data } = this;
     const data2 = heap.data;
     const merge = new Heap(comparator);
-    merge.data = [null, ...data, ...data2];
+    for (let i = 1; i < data.length; i++) merge.data.push(data[i]);
+    for (let i = 1; i < data2.length; i++) merge.data.push(data2[i]);
     merge.heapify();
     return merge;
   }
