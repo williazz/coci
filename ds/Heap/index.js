@@ -133,7 +133,7 @@ class Heap {
    */
   deleteRoot() {
     const { data, root, length } = this;
-    if (length === 1) return;
+    if (length <= 1) return;
     if (length === 2) return data.pop();
     else {
       data[1] = data.pop();
@@ -209,7 +209,24 @@ class Heap {
     return merge;
   }
 
-  meld() {}
+  /**
+   * Melds this heap with another and destroy both original heaps. The new heap uses this heap's constructor
+   * @param {Heap} heap - A different heap for this heap to meld with
+   * @return {Heap} - Returns a new heap
+   */
+  meld(heap) {
+    if (!(heap instanceof Heap)) return;
+    const { comparator, data } = this;
+    const meld = new Heap(comparator);
+    meld.data = data;
+    this.data = [null];
+    let x = heap.deleteRoot();
+    while (x) {
+      meld.insert(x);
+      x = heap.deleteRoot();
+    }
+    return meld;
+  }
 }
 
 module.exports = Heap;

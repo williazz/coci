@@ -306,7 +306,7 @@ describe('Heap', () => {
       done();
     });
 
-    it('should be lossless', (done) => {
+    it('should have the correct number of items', (done) => {
       expect(merge.length).toEqual(401);
       done();
     });
@@ -324,5 +324,34 @@ describe('Heap', () => {
     });
   });
 
-  describe('meld', () => {});
+  describe('meld', () => {
+    const h1 = new Heap().fromArray(_.range(200));
+    const h2 = new Heap().fromArray(_.range(300, 500));
+    const meld = h1.meld(h2);
+    it('should be heapified', (done) => {
+      try {
+        meld.checkIntegrity();
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+      done();
+    });
+
+    it('should have the correct number of items', (done) => {
+      expect(meld.length).toEqual(401);
+      done();
+    });
+
+    it('should destroy the previous two heaps', (done) => {
+      expect(h1.length).toEqual(1);
+      expect(h2.length).toEqual(1);
+      done();
+    });
+
+    it('should return a new heap', (done) => {
+      expect(meld).not.toBe(h1);
+      expect(meld).not.toBe(h2);
+      done();
+    });
+  });
 });
