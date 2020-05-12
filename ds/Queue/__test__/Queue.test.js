@@ -1,4 +1,4 @@
-const Queue = require('../Queue.js');
+const Queue = require('../index.js');
 const _ = require('underscore');
 
 describe('Queue', () => {

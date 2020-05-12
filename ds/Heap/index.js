@@ -55,7 +55,8 @@ class Heap {
    * @returns {Boolean} - Indicates whether or not parent and child were swapped
    */
   swapIfNeeded(c, p) {
-    const { data, comparator } = this;
+    const { data, comparator, length } = this;
+    if (p >= length || c >= length) return false;
     if (c >= p || p >> 1 !== c || c === p)
       throw new Error(
         'Heap.swapIfNeeded: arguments must have parent-child relationship!',
@@ -174,13 +175,9 @@ class Heap {
    * Heapifies the values
    */
   heapify() {
-    const { swapIfNeeded, siftDown, data, length, comparator } = this;
-    for (let p = length - 1; p > 0; p--) {
-      const c1 = p * 2;
-      const c2 = c1 + 1;
-      const next = comparator(data[c1], data[c2]) > 0 ? c2 : c1;
-      if (swapIfNeeded(p, next)) siftDown(next);
-    }
+    const { siftDown, length } = this;
+    for (let i = length - 1; i > 0; i--) siftDown(i);
+    return this;
   }
 
   /**
@@ -189,8 +186,7 @@ class Heap {
    */
   fromArray(vals = []) {
     this.data = [null, ...vals];
-    this.heapify();
-    return this;
+    return this.heapify();
   }
 
   /**

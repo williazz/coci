@@ -281,8 +281,18 @@ describe('Heap', () => {
     });
   });
 
-  describe('fromArray', () => {
-    it('should build from many values', (done) => {
+  describe('heapify', () => {
+    it('should build from many values from greatest to least', (done) => {
+      const minHeap = new Heap().fromArray(_.range(200).reverse());
+      try {
+        minHeap.checkIntegrity();
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+      done();
+    });
+
+    it('should build from many values from least to greatest', (done) => {
       const minHeap = new Heap().fromArray(_.range(200));
       try {
         minHeap.checkIntegrity();

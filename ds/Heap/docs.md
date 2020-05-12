@@ -1,6 +1,6 @@
 <a name="Heap"></a>
 
-### [Back to README](README.md)
+### [<- Back](README.md)
 
 ## Heap
 
@@ -216,4 +216,4 @@ Melds this heap with another and destroy both original heaps. The new heap uses 
 | ----- | -------------------------- | ------------------------------------------- |
 | heap  | [<code>Heap</code>](#Heap) | A different heap for this heap to meld with |
 
-### [Back to README](README.md)
+### [<- Back](README.md)
