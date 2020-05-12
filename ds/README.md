@@ -1,5 +1,7 @@
 # Data Structures
 
+- [Heaps](Heaps/README.md)
+
 # Resources
 
 - [Ananda Gunawardena, CMU Slides](https://www.cs.cmu.edu/~guna/15-123S11/Lectures/)

@@ -1,6 +1,8 @@
-# Data Structures
+# SWE Training Journal
 
-# Resources
+My CS fundamentals training journal. Includes implementations of ds and algos, solutions to COCI and leetcode, and testing suites in the Node runtime
 
-- [@trekhleb's javascript-algorithms repo](https://github.com/trekhleb/javascript-algorithms)
-- [@adam-p's markdown cheatsheet](https://github.com/adam-p/markdown-here)
+### Modules
+
+- [Data structures](ds/README.md)
+- [Frontend](frontend.README.md)
