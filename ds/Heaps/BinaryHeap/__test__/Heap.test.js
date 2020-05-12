@@ -364,4 +364,35 @@ describe('Heap', () => {
       done();
     });
   });
+
+  describe('decreaseKey', () => {
+    const minHeap = new Heap().fromArray(_.range(100));
+    it('should decrease one key', (done) => {
+      minHeap.decreaseKey(99);
+      expect(minHeap.includes(99)).toBeFalse();
+      done();
+    });
+
+    it('should decrease the min', (done) => {
+      minHeap.decreaseKey(0);
+      done();
+    });
+
+    it('should decrease many keys', (done) => {
+      for (let i = 0; i < 99; i++) {
+        const res = minHeap.decreaseKey(i);
+        expect(res).toBeInstanceOf(Number);
+      }
+      done();
+    });
+
+    it('should have heap integrity', (done) => {
+      try {
+        minHeap.checkIntegrity();
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+      done();
+    });
+  });
 });

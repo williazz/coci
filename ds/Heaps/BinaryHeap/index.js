@@ -71,9 +71,9 @@ class Heap {
   /**
    * Heapifies the last val into the right place
    */
-  siftUp() {
-    const { swapIfNeeded, length } = this;
-    let p = length - 1;
+  siftUp(start = this.length - 1) {
+    const { swapIfNeeded } = this;
+    let p = start;
     while (p > 1) {
       const c = p >> 1;
       if (swapIfNeeded(c, p)) p = c;
@@ -222,6 +222,17 @@ class Heap {
       x = heap.deleteRoot();
     }
     return meld;
+  }
+
+  decreaseKey(val) {
+    const { length, data, siftUp } = this;
+    for (let i = length - 1; i > 0; i--) {
+      if (data[i] === val) {
+        data[i]--;
+        siftUp(i);
+        return val - 1;
+      }
+    }
   }
 }
 

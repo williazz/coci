@@ -1,12 +1,15 @@
-const Heap = require('../Heap');
+const MinHeap = require('../Heaps/BinaryHeap');
 const PQNode = require('./PQNode.js');
 
 /**
  * Priority Queue
  * @class */
 class PriorityQueue {
-  constructor(comparator = (p, c) => p.priority - c.priority) {
-    this.heap = new Heap(comparator);
+  constructor(
+    comparator = (child, parent) => child.priority - parent.priority,
+  ) {
+    this.comparator = comparator;
+    this.heap = new MinHeap(comparator);
   }
 
   /**
@@ -14,9 +17,9 @@ class PriorityQueue {
    * @param {*} item
    * @param {*} priority
    */
-  add(item, priority) {
+  add(val, priority) {
     const { heap } = this;
-    const node = new PQNode(item, priority);
+    const node = PQNode(val, priority);
     heap.insert(node);
   }
 
@@ -24,15 +27,19 @@ class PriorityQueue {
    * Returns and deletes root from the heap
    * @returns {*}
    */
-  pull() {
+  extractMin() {
     const { heap } = this;
     const res = heap.deleteRoot();
     if (res) return res.val;
   }
 
+  decreaseKey() {}
+
   remove(item) {}
 
-  changePriority(item, priority) {}
+  meld() {}
+
+  peekMin() {}
 }
 
 module.exports = PriorityQueue;
