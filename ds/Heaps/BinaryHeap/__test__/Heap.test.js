@@ -1,6 +1,6 @@
 const _ = require('underscore');
 const faker = require('faker');
-const Heap = require('../Heap.js');
+const Heap = require('../index.js');
 
 describe('Heap', () => {
   describe('checkIntegrity', () => {
@@ -94,12 +94,12 @@ describe('Heap', () => {
     });
   });
 
-  describe('heapifyUp', () => {
+  describe('siftUp', () => {
     it('should heapify a misplaced last item', (done) => {
       const minHeap = new Heap();
       minHeap.data = [null, ..._.range(20)];
       minHeap.data[20] = 1;
-      minHeap.heapifyUp();
+      minHeap.siftUp();
       try {
         minHeap.checkIntegrity();
       } catch (err) {
@@ -112,7 +112,7 @@ describe('Heap', () => {
       const minHeap = new Heap();
       minHeap.data = [null, ..._.range(20)];
       minHeap.data[20] = -5;
-      minHeap.heapifyUp();
+      minHeap.siftUp();
       try {
         minHeap.checkIntegrity();
         expect(minHeap.root).toEqual(-5);
@@ -123,13 +123,13 @@ describe('Heap', () => {
     });
   });
 
-  describe('heapifyDown', () => {
+  describe('siftDown', () => {
     it('should heapify a misplaced root', (done) => {
       const data = [null, ..._.range(20)];
       data[1] = 10;
       const minHeap = new Heap();
       minHeap.data = data;
-      minHeap.heapifyDown();
+      minHeap.siftDown();
       try {
         minHeap.checkIntegrity();
       } catch (err) {
@@ -143,7 +143,7 @@ describe('Heap', () => {
       data[10] = 50;
       const minHeap = new Heap();
       minHeap.data = data;
-      minHeap.heapifyDown(10);
+      minHeap.siftDown(10);
       try {
         minHeap.checkIntegrity();
       } catch (err) {
@@ -274,6 +274,121 @@ describe('Heap', () => {
       }
       try {
         customHeap.checkIntegrity();
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+      done();
+    });
+  });
+
+  describe('heapify', () => {
+    it('should build from many values from greatest to least', (done) => {
+      const minHeap = new Heap().fromArray(_.range(200).reverse());
+      try {
+        minHeap.checkIntegrity();
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+      done();
+    });
+
+    it('should build from many values from least to greatest', (done) => {
+      const minHeap = new Heap().fromArray(_.range(200));
+      try {
+        minHeap.checkIntegrity();
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+      done();
+    });
+  });
+
+  describe('merge', () => {
+    const h1 = new Heap().fromArray(_.range(200));
+    const h2 = new Heap().fromArray(_.range(300, 500));
+    const merge = h1.merge(h2);
+    it('should be heapified', (done) => {
+      try {
+        merge.checkIntegrity();
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+      done();
+    });
+
+    it('should have the correct number of items', (done) => {
+      expect(merge.length).toEqual(401);
+      done();
+    });
+
+    it('should preserve the previous two heaps', (done) => {
+      expect(h1.length).toEqual(201);
+      expect(h2.length).toEqual(201);
+      done();
+    });
+
+    it('should return a new heap', (done) => {
+      expect(merge).not.toBe(h1);
+      expect(merge).not.toBe(h2);
+      done();
+    });
+  });
+
+  describe('meld', () => {
+    const h1 = new Heap().fromArray(_.range(200));
+    const h2 = new Heap().fromArray(_.range(300, 500));
+    const meld = h1.meld(h2);
+    it('should be heapified', (done) => {
+      try {
+        meld.checkIntegrity();
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+      done();
+    });
+
+    it('should have the correct number of items', (done) => {
+      expect(meld.length).toEqual(401);
+      done();
+    });
+
+    it('should destroy the previous two heaps', (done) => {
+      expect(h1.length).toEqual(1);
+      expect(h2.length).toEqual(1);
+      done();
+    });
+
+    it('should return a new heap', (done) => {
+      expect(meld).not.toBe(h1);
+      expect(meld).not.toBe(h2);
+      done();
+    });
+  });
+
+  describe('decreaseKey', () => {
+    const minHeap = new Heap().fromArray(_.range(100));
+    it('should decrease one key', (done) => {
+      minHeap.decreaseKey(99);
+      expect(minHeap.includes(99)).toBeFalse();
+      done();
+    });
+
+    it('should decrease the min', (done) => {
+      minHeap.decreaseKey(0);
+      done();
+    });
+
+    it('should decrease many keys', (done) => {
+      for (let i = 0; i < 99; i++) {
+        const res = minHeap.decreaseKey(i);
+        expect(res).toBeInstanceOf(Number);
+      }
+      done();
+    });
+
+    it('should have heap integrity', (done) => {
+      try {
+        minHeap.checkIntegrity();
       } catch (err) {
         expect(err).toBeUndefined();
       }

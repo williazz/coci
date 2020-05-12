@@ -1,6 +1,6 @@
 const _ = require('underscore');
 const LinkedListNode = require('./LinkedListNode.js');
-const deepEqual = require('../../_util/deepEqual.js');
+const deepEqual = require('../../util/deepEqual.js');
 
 /**
  * LinkedList

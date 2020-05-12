@@ -1,7 +1,7 @@
-const LinkedList = require('../LinkedList.js');
+const LinkedList = require('../index.js');
 const LinkedListNode = require('../LinkedListNode.js');
 const _ = require('underscore');
-const deepEqual = require('../../../_util/deepEqual.js');
+const deepEqual = require('../../../util/deepEqual.js');
 
 describe('LinkedList', () => {
   describe('append', () => {

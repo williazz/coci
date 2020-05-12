@@ -1,5 +1,5 @@
-const HashTable = require('../HashTable.js');
-const _util = require('../../../_util');
+const HashTable = require('../index.js');
+const _util = require('../../../util');
 const _ = require('underscore');
 const sinon = require('sinon');
 
