@@ -5,4 +5,4 @@ My CS fundamentals training journal. Includes implementations of ds and algos, s
 ### Modules
 
 - [Data structures](ds/README.md)
-- [Frontend](frontend.README.md)
+- [Frontend](frontend/README.md)
