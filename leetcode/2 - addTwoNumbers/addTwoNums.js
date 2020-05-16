@@ -73,16 +73,16 @@ class ListNode {
 }
 
 /*
- l1:   
- l2:   
- dig   
- car   
+ l1:   3 1 6 9
+ l2:   9 5 4 9
+ dig   2 7 0 8 1
+ car   1
 */
 
 const addTwoNums = function(l1, l2) {
-  let car = 0;
-  const res = { next: null };
-  let tail = res;
+  let car = false;
+  const dummy = { next: null };
+  let tail = dummy;
   let c1 = l1;
   let c2 = l2;
   while (c1 || c2 || car) {
@@ -103,7 +103,7 @@ const addTwoNums = function(l1, l2) {
     tail.next = new ListNode(dig);
     tail = tail.next;
   }
-  return res.next;
+  return dummy.next;
 };
 
 module.exports = addTwoNums;
