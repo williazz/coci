@@ -1,8 +1,10 @@
 # SWE Training Journal
 
-My CS fundamentals training journal. Includes implementations of ds and algos, solutions to COCI and leetcode, and testing suites in the Node runtime
+My CS and webdev fundamentals training journal. Includes implementations of ds and algos, solutions to COCI and leetcode, writeups of general knowledge, and testing suites in the Node runtime.
 
 ### Modules
 
-- [Data structures](ds/README.md)
-- [Frontend](frontend/README.md)
+- [Cracking the Coding Interview](coci/)
+- [Data Structures](ds/README.md)
+- [Algorithms](algos/README.md)
+- [Web Development Concepts](webdev/README.md)

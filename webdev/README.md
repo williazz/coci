@@ -1,6 +1,6 @@
 # [Frontend Roadmap](https://roadmap.sh/frontend)
 
-- [Internet](internet/README.md)
+- [Internet](1-internet/README.md)
 - HTML
 
   - Forms and Validations
