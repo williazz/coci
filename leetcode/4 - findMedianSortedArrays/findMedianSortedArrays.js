@@ -15,14 +15,6 @@
   h
 
   avg = 2
-
-
-
-
-  
-  
-
-
  
  */
 
@@ -66,6 +58,11 @@
 
 */
 
-const findMedianSortedArrays = function(numsA, numsB) {};
+const findMedianSortedArrays = function(numsA, numsB) {
+  const m = numsA.length,
+    n = numbsB.length;
+  let i = 0,
+    j = (m + n + 1) / 2 - i;
+};
 
 module.exports = findMedianSortedArrays;
