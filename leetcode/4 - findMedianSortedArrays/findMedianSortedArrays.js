@@ -1,70 +1,68 @@
 /*
-    m: 6,6,15
-    n: 1,5,9,11,13
-    
-    guess median
 
-    guess = (m.length + n.length) >> 1
-    
-    
-    split remaining numbers into two sets: left and right
-        identify lengths of left and right
-        identify max left and min right
-        change guess
+  There are two sorted arrays nums1 and nums2 of size m and n respectively.
 
-    
-    ensure smaller is first
-    define half
+  Find the median of the two sorted arrays. 
+  The overall run time complexity should be O(log (m+n)).
 
-    define low = 0 and high = n
+  You may assume nums1 and nums2 cannot be both empty.
 
-    while (low < high) {
+  
+  3
+  k
 
-    }
-    
+  1 2
+  h
 
+  avg = 2
+ 
  */
 
-const findMedianSortedArrays = function findMedianSortedArrays(nums1, nums2) {
-  const n = nums1.length;
-  const m = nums2.length;
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
 
-  if (m < n) {
-    return findMedianSortedArrays(nums2, nums1);
-  }
+/*
+ 
 
-  const half = (m + n + 1) >> 1;
+ A: 0 1 3
+      a
 
-  let low = 0;
-  let high = n;
-  while (low <= high) {
-    const i = (low + high) >> 1;
-    const j = half - i;
+ B: 2 4
+    b
 
-    if (i < n && nums1[i] < nums2[j - 1]) {
-      low = i + 1;
-    } else if (i > 0 && nums1[i - 1] > nums2[j]) {
-      high = i - 1;
-    } else {
-      const l1 = i === 0 ? -Infinity : nums1[i - 1];
-      const l2 = j === 0 ? -Infinity : nums2[j - 1];
-      const maxLeft = Math.max(l1, l2);
+  A
+  [0, ...i, ...m-1]
 
-      if ((m + n) % 2 === 1) {
-        return maxLeft;
-      }
+  leftA = [0, ...i-1]
+  rightA = [i, ...m-1]
 
-      const r1 = i === n ? Infinity : nums1[i];
-      const r2 = j === m ? Infinity : nums2[j];
-      const minRight = Math.min(r1, r2);
+  B
+  [0, ...j, ...n-1]
 
-      return (maxLeft + minRight) / 2;
-    }
-  }
+  leftB = [0, ...j-1]
+  rightB = [j, ...n-1]
+
+  median exists when
+    for m = avg(i, j)
+      where Max[leftA & leftB] < Min[rightA & rightB]
+      and len[left] === len[right]
+
+
+  while ?
+    
+    
+    compare leftLen rightLen
+
+*/
+
+const findMedianSortedArrays = function(numsA, numsB) {
+  const m = numsA.length,
+    n = numbsB.length;
+  let i = 0,
+    j = (m + n + 1) / 2 - i;
 };
-
-const output = findMedianSortedArrays([2], [1, 3]);
-
-console.log(output);
 
 module.exports = findMedianSortedArrays;

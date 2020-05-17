@@ -1,32 +1,38 @@
-const longestPalindrome = function(str) {
-  let resStart = -1,
-    resEnd = -2;
-  for (let i = 0; i < str.length; i++) {
-    let start = i,
-      end = i;
-    let checkEven = true;
-    while (str[start] === str[end] && str[start]) {
-      if (str[start - 1] === str[end + 1] && str[start - 1]) {
-        start--;
-        end++;
-        if (checkEven) checkEven = false;
-      } else if (str[start] === str[end + 1] && str[start] && checkEven) {
-        end++;
-        checkEven = false;
-      } else if (str[start - 1] === str[end] && str[end] && checkEven) {
-        start--;
-        checkEven = false;
-      } else {
-        break;
-      }
-    }
-    if (end - start > resEnd - resStart) {
-      resStart = start;
-      resEnd = end;
-    }
-  }
-  console.log(resStart, resEnd);
-  return str.slice(resStart, resEnd + 1);
-};
+/*
+  Given a string s, find the longest palindromic substring in s. 
+  You may assume that the maximum length of s is 1000.
+
+  Example 1:
+
+  Input: "babad"
+  Output: "bab"
+  Note: "aba" is also a valid answer.
+  Example 2:
+
+  Input: "cbbd"
+  Output: "bb"
+
+  brute force:
+    look at every substr
+    reverse and compare
+
+  sliding window:
+
+    left = 0, right = len - 1;
+
+    b d b b d
+
+    l       r
+
+
+
+*/
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+
+var longestPalindrome = function(s) {};
 
 module.exports = longestPalindrome;
