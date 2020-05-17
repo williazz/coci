@@ -47,7 +47,7 @@ const isUniqueASCII = (str, extended = false) => {
 	}
 };
 
-const isUnique = str => {
+const isUnique = (str) => {
 	try {
 		if (typeof str !== 'string') {
 			throw new TypeError('Argument str must be a string');
@@ -65,7 +65,6 @@ const isUnique = str => {
 	}
 };
 
-const isUniqueBitVector = str => str;
+const isUniqueBitVector = (str) => str;
 
-
-module.exports = { isUniqueASCII, isUnique ,isUniqueBitVector };
+module.exports = { isUniqueASCII, isUnique, isUniqueBitVector };

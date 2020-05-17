@@ -15,14 +15,14 @@
     return arr
 */
 
-const quickSort = (arr = []) => {
+  const quickSort = (arr = []) => {
   if (arr.length < 1) 
   (function sort(l, r) {
     if (r - l < 2) return;
     const p = Math.random()*(r - l) + l;
     [arr[l], arr[p]] = [arr[p], arr[l]];
     let i = l + 1;
-    for (let j = l + 1; j < right + 1)
+    for (let j = l + 1; j < right + 1){}
 
 
   })(0, arr.length);
