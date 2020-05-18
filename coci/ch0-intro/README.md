@@ -8,4 +8,4 @@
 - Before the interview
 - Behavior questions
 - [Big O notation](./bigo.md)
-- Technical Questions
+- [Technical Questions](./tech-questions.md)
