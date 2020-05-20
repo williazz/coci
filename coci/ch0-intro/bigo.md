@@ -40,3 +40,7 @@ Some useful **sequences and series** math for proofs
 - [Arithmetic sequences and sums](https://www.mathsisfun.com/algebra/sequences-sums-arithmetic.html)
 - [Gemoetric sequences and sums](https://www.mathsisfun.com/algebra/sequences-sums-geometric.html)
 - Runtime can either be the sum or the number of terms in the sequence
+
+### Further Reading
+
+- [Common complexities](https://en.wikipedia.org/wiki/Time_complexity#Table_of_common_time_complexities)

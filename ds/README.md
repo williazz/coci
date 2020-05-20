@@ -2,15 +2,17 @@
 
 ### Modules
 
-- Linked List
+- [Linked List](LinkedList/README.md)
 - Tree
-- Tries
+- Trie
 - Graph
-- Stack
-- Queue
-- [Heap](Heaps/README.md)
+- Stack (just use an ArrayList)
+- [Queue](Queue/README.md)
+- [Priority Queue](PriorityQueue/README.md)
+- [Heap](Heap/README.md)
 - Vector / ArrayList
 - HashTable
+- Bloom Filter
 
 ### Resources
 
