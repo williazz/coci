@@ -1,7 +1,7 @@
 /** @class Creates a Binary Search Tree */
 class BST {
 	/**
-	 * @param {*} val - Sets the root value of this BST node
+	 * @param {*} [val] - Sets the root value of this BST node
 	 * @param {Object} [options]
 	 * @param {Function} [options.measure=identity(val)] - Determines how to measure and therefore compare node values. Must return a number
 	 * @param {Boolean} [options.duplicates=false] - Determines whether or not duplicate values are allowed
@@ -13,33 +13,33 @@ class BST {
 		};
 		this.options = Object.assign(defaultOptions, options);
 
-		const measureVal = this.options.measure(val);
-		if (typeof measureVal !== 'number')
+		const measure = this.options.measure;
+		if (val !== undefined && typeof measure(val) !== 'number')
 			throw new Error(`
-				BST val must be measurable!
-					measure(val)=${measureVal}
-					typeof=${typeof measureVal}
-			`);
+				BST value must be measurable (if defined)
+					node=${val}
+					measure=${measure(val)}
+					typeof measure=${typeof measure(val)}`);
 
 		this.val = val;
 		this.left = null;
 		this.right = null;
-
+		this.checkIntegrity = this.checkIntegrity.bind(this);
 		this.getDirection = this.getDirection.bind(this);
 	}
 
 	/**
-	 * Defines the binary search property. Compares a new value to node value and defines the direction of the new value
+	 * Defines the binary search property. Determines where the next val should go by comparing to pre
 	 * @param {*} val
 	 * @param {*} node
 	 * @returns {String} left | right
 	 */
-	getDirection(next, cur) {
+	getDirection(next, pre) {
 		const { duplicates, measure } = this.options;
 		next = measure(next);
-		cur = measure(cur);
-		if (!duplicates && next === cur) return;
-		return next < cur ? 'left' : 'right';
+		pre = measure(pre);
+		if (!duplicates && next === pre) return;
+		return next < pre ? 'left' : 'right';
 	}
 
 	/**
@@ -53,33 +53,7 @@ class BST {
 			traverse(node.left);
 			traverse(node.right);
 		};
-
 		traverse(this);
-	}
-
-	/** Traverses the BST and throws error if binary search property is not satisfied */
-	checkIntegrity() {
-		const { getDirection } = this;
-		const { measure } = this.options;
-		this.preOrderTraverse((node) => {
-			// check left < parent
-			if (typeof measure(node.val) !== 'number')
-				throw new Error(`
-					BST node values must be measurable!
-						node.val=${node.val}
-						measure(val)=${measure(node.val)}
-				`);
-			if (node.left && getDirection(node.val, node.left.val) !== 'left') {
-				throw new Error(
-					`BST: left ${node.left.val} must be less than parent ${node.val}`,
-				);
-			}
-			// check parent < right
-			if (node.right && getDirection(node.val, node.right.val) !== 'right')
-				throw new Error(
-					`BST: right ${node.right.val} must be >= parent ${node.val}; duplicates=${options.duplicates}`,
-				);
-		});
 	}
 
 	/**
@@ -89,6 +63,37 @@ class BST {
 	isEmpty() {
 		const { val, left, right } = this;
 		return val === undefined && !left && !right;
+	}
+
+	/** Traverses the BST and throws error if binary search property is not satisfied */
+	checkIntegrity() {
+		if (this.isEmpty()) return;
+
+		const { getDirection, options } = this;
+		const { measure, duplicates } = options;
+		this.preOrderTraverse((node) => {
+			if (typeof measure(node.val) !== 'number')
+				throw new Error(`
+					BST node values must be measurable!
+						node=${node.val}
+						measure(val)=${measure(node.val)}`);
+
+			// check left < parent
+			if (node.left && getDirection(node.left.val, node.val) !== 'left') {
+				throw new Error(
+					`BST: left ${node.left.val} must be less than parent ${node.val}`,
+				);
+			}
+
+			// check parent < right
+			if (node.right && getDirection(node.right.val, node.val) !== 'right')
+				throw new Error(
+					`BST: parent < right
+						right=${node.right.val} must be ${duplicates ? '>=' : '>'} node
+						node=${node.val}
+						duplicates=${duplicates}`,
+				);
+		});
 	}
 
 	/**
@@ -112,17 +117,23 @@ class BST {
 			}
 			dir = getDirection(val, node);
 		}
+		return false;
 	}
 
+	/**
+	 * Whether or not a BST contains the val
+	 * @param {*} val
+	 * @returns {Boolean}
+	 */
 	contains(val) {
-		const measure = this.options.measure;
-		const getDirection = this.getDirection;
+		const { getDirection } = this;
 		let cn = this;
-		let dir = getDirection(val, cn.val);
-		while (dir) {
+		while (cn) {
+			if (cn.val === val) return true;
+			const dir = getDirection(val, cn.val);
 			cn = cn[dir];
-			dir = getDirection(val, cn.val);
 		}
+		return false;
 	}
 
 	getHeight() {
