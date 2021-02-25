@@ -1,30 +1,23 @@
+const checkPalindrome = require('./checkPalindrome');
+
 /*
   Given a string s, find the longest palindromic substring in s. 
-  You may assume that the maximum length of s is 1000.
 
-  Example 1:
+  Strategy
 
-  Input: "babad"
-  Output: "bab"
-  Note: "aba" is also a valid answer.
-  Example 2:
+  longestPal(str) {
+    iterate
+      checkPalindrome(odd)
+      checkPalindrome(even)
+    return longest
+  }
 
-  Input: "cbbd"
-  Output: "bb"
+  checkPalindrome(str, left, right) {
+    while(left & right in bounds && equal vals)
+      increment & decrement
+    return l+r - 1
 
-  brute force:
-    look at every substr
-    reverse and compare
-
-  sliding window:
-
-    left = 0, right = len - 1;
-
-    b d b b d
-
-    l       r
-
-
+  }
 
 */
 
@@ -33,6 +26,18 @@
  * @return {string}
  */
 
-var longestPalindrome = function(s) {};
+function longestPalindrome(s) {
+  if (!s) return 0;
+  let longest = [0, 0];
+  for (let i = 0; i < s.length; i++) {
+    const odd = checkPalindrome(s, i, i);
+    if (odd[1] - odd[0] > longest[1] - longest[0]) longest = odd;
+    if (i > 0) {
+      const even = checkPalindrome(s, i - 1, i);
+      if (even[1] - even[0] > longest[1] - longest[0]) longest = even;
+    }
+  }
+  return s.substr(longest[0], longest[1] + 1);
+}
 
 module.exports = longestPalindrome;

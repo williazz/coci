@@ -1,2 +1,7 @@
 const longestPalindrome = require('./longestPalindrome.js');
-describe('longestPalindrome', () => {});
+
+const str = 'bbbabba';
+
+console.log(longestPalindrome('cbbd'));
+
+// describe('longestPalindrome', () => {});
