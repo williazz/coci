@@ -1,10 +1,10 @@
 # Binary Search Tree
 
-
-
 The binary search tree performs most operations in O(logn) time where n is the number of nodes. However, because a BST cannot balance, the runtime approaches O(n) as the number of insertions becomes very large.
 
 ### Documentation
+
+
 
 ### Sources
 
