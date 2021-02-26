@@ -45,7 +45,7 @@ function isPalindrome(head) {
   k = k.next;
   while (k) {
     if (h.val !== k.val) return false;
-    k = k.next;
+    k = k.next; 
     h = h.next;
   }
   return true;
