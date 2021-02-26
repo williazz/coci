@@ -1,5 +1,0 @@
-/**
- *
- */
-
-const strassen = (m, n) => {};
