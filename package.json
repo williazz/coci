@@ -19,6 +19,7 @@
   "author": "williazz",
   "license": "ISC",
   "dependencies": {
+    "lodash": "^4.17.21",
     "underscore": "^1.10.2"
   },
   "devDependencies": {
@@ -31,6 +32,7 @@
     "kind-of": "^6.0.3",
     "minimist": "^1.2.5",
     "prettier": "^1.19.1",
-    "sinon": "^9.0.2"
+    "sinon": "^9.0.2",
+    "treeify": "^1.1.0"
   }
 }
