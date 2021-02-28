@@ -19,6 +19,7 @@
   "author": "williazz",
   "license": "ISC",
   "dependencies": {
+    "algorithms": "^0.10.0",
     "lodash": "^4.17.21",
     "underscore": "^1.10.2"
   },

@@ -11,6 +11,7 @@ const iterativeDFS = {
 
 /**
  * O(logn) space using stack
+ * https://leetcode.com/problems/binary-tree-preorder-traversal/
  * @param {BSTNode} root
  * @param {Function} visit
  */
@@ -18,17 +19,18 @@ function preOrder(root, visit) {
   if (!root) return;
   const stack = [root];
   while (stack.length) {
-    const cn = stack.pop();
-    if (cn) {
-      visit(cn);
-      stack.push(cn.right);
-      stack.push(cn.left);
+    const node = stack.pop();
+    if (node) {
+      visit(node);
+      if (node.right) stack.push(node.right);
+      if (node.left) stack.push(node.left);
     }
   }
 }
 
 /**
  * O(logn) space using stack
+ * https://leetcode.com/problems/binary-tree-inorder-traversal/
  * @param {BSTNode} root
  * @param {Function} visit
  */
@@ -47,10 +49,27 @@ function inOrder(root, visit) {
 
 /**
  * O(logn) space using stack
+ * https://leetcode.com/problems/binary-tree-postorder-traversal/
  * @param {BSTNode} root
  * @param {Function} visit
  */
-function postOrder(root, visit) {}
+function postOrder(root, visit) {
+  const stack = [];
+  while (stack.length || root) {
+    while (root) {
+      if (root.right) stack.push(root.right);
+      stack.push(root);
+      root = root.left;
+    }
+    const node = stack.pop();
+    if (stack.length && node.right === stack[stack.length - 1]) {
+      root = stack.pop();
+      stack.push(node);
+    } else {
+      visit(node);
+    }
+  }
+}
 
 /**
  * O(logn) space using queue
