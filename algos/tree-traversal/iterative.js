@@ -1,11 +1,9 @@
 const Queue = require('algorithms/data_structures/queue');
 
-const iterativeDFS = {
-  DFS: {
-    preOrder,
-    inOrder,
-    postOrder,
-  },
+const iterative = {
+  preOrder,
+  inOrder,
+  postOrder,
   BFS,
 };
 
@@ -87,4 +85,4 @@ function BFS(root, visit) {
   }
 }
 
-module.exports = iterativeDFS;
+module.exports = iterative;
