@@ -1,2 +1,2 @@
-# bt-traversal
+# tree-traversal
 
