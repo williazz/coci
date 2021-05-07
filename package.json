@@ -20,7 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.21",
-    "underscore": "^1.10.2"
+    "underscore": "^1.12.1"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
